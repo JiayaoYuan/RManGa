@@ -1,0 +1,157 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>伪恋 - RManGa</title>
+	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/chapter.css">
+</head>	
+<body>
+	<div class="slcf_container">
+		<!-- 悬浮栏区域 上 -->
+		<section class="float-bar top" style="display: none;">
+			<a href="javascript: history.back();" class="goback"></a>
+			<a href="./comic.html" class="godescript">详</a>
+			<a href="./index.html" class="gohome">家</a>
+			<p class="float-bar-info">第<span>1</span>话-<span>1</span>/<span>62</span></p>
+		</section>
+		<!-- 漫画图片区域 -->
+		<section class="comic-pic-list-all clearfix" id="open-ctrl" ng-app="" ng-init="">
+			<a href="javascript: void(0);" class="nav-ctrl-btn prev" data-can-read="">点击加载上一章</a>
+			<!-- 漫画图片插入 -->		
+			<section>
+				<ul class="comic-pic-ul">
+					<li class="comic-pic-li" data-cid="1" data-index="1" ng-repeat=" x in datas">
+						<div class="comic-pic-box">
+							<img src="{{ x.img }}" alt="" class="comic-pic">
+						</div>
+					</li>
+				</ul>
+			</section>
+			<a href="javascript: void(0);" class="nav-ctrl-btn next" data-can-read="">点击加载下一章</a>
+		</section>
+		<!-- 悬浮栏 下 -->
+		<section class="float-bar bottom" style="display: none;">
+			<a href="javascript: void(0);" class="chapter-prev-btn" type="button">上一章</a>
+			<a href="javascript: void(0);" class="chapter-next-btn" type="button">下一章</a>
+		</section>
+		<!-- 漫画控制面板 -->
+		<section class="comic-ctrl-box" style="display: none;">
+			<div class="comic-back-box"></div>
+		</section>
+		<!-- 漫画loading -->
+		<div class="comic-loading comic-list-loading">
+			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
+		</div>
+	</div>
+	<script src="./js/jquery-3.4.1.min.js"></script>
+	<script src="./js/mock.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/rem.js"></script>
+	<script src="./js/comic.js"></script>
+	<script>
+		$(document).ready(function(){
+			//获取漫画类型参数
+			var pathName = getQueryVariable("chapter");
+			var pathName2 = getQueryVariable("url");
+			var page = getQueryVariable("page");
+			var prevPage = null;
+			var nextPage = null;
+			var datas = new Array();
+			var pages = new Array(); //章节
+			console.log("类型参数： " + pathName);
+			console.log("漫画详细url： " + pathName2);
+			console.log("当前章节： " + page);			
+
+			//加载内容
+			$.ajax({
+				url: "http://47.114.147.221/?mhurl2="+pathName,
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){						
+						titleInfo = res.data;						
+						$.each(res.list, function(index, res){
+							if(index > 0){
+								datas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});
+
+			//加载章节
+			$.ajax({
+				url: "http://47.114.147.221/?mhurl1="+pathName2,
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$("title").text(res.data.name + " - RManGa");
+						$(".title-name").text(res.data.name);
+						titleInfo = res.data;
+						$.each(res.list, function(index, res){
+							if(res.url != null){
+								pages.push(res);
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});	
+
+			//上下章节
+			$(".prev").data("can-read", Number(page)-1);
+			$(".next").data("can-read", Number(page)+1);
+			prevPage = $(".prev").data("can-read");
+			nextPage = $(".next").data("can-read");			
+
+			//如果是第一章
+			if(prevPage == 0){
+				$(".prev").text("已经是第一章")
+				$(".chapter-prev-btn").css("background-color", "#ddd");
+			}else{
+				$(".prev").css("z-index", 20000);
+				$(".prev").attr("href", "./chapter.html?chapter="+pages[prevPage].url+"&page="+prevPage+"&url="+pathName2);
+				$(".chapter-prev-btn").attr("href", "./chapter.html?chapter="+pages[prevPage].url+"&page="+prevPage+"&url="+pathName2);
+			}			
+
+			//如果是最后一章
+			if(nextPage > pages.length){				
+				$(".next").text("已经是最后一章");
+				$(".chapter-next-btn").css("background-color", "#ddd");
+			}else{
+				$(".next").css("z-index", 20000);
+				$(".next").attr("href", "./chapter.html?chapter="+pages[nextPage].url+"&page="+nextPage+"&url="+pathName2);
+				$(".chapter-next-btn").attr("href", "./chapter.html?chapter="+pages[nextPage].url+"&page="+nextPage+"&url="+pathName2);
+			}
+
+			//详情
+			$(".godescript").attr("href", "./comic.html?url="+pathName2);
+
+			if(datas != null){
+				//返回给ui	
+				$("#open-ctrl").attr("ng-init", "datas=["+datas+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+			}
+			
+		})
+	</script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</body>
+</html>

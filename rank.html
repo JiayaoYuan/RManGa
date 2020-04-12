@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>排行 - RManGa</title>
+	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/rank.css">
+</head>	
+<body>
+	<div class="slcf_container">
+		<header>
+			<div class="head_container">
+				<div class="head_top">					
+					<a class="goback" href="javascript: history.back();"></a>
+					<span>排行</span>
+					<a href="javascript: void(0);"></a>
+				</div>
+			</div>
+		</header>
+		<!-- 漫画排行 -->
+		<section id="comicHot" class="ContentBase clearfix" ng-app="" ng-init="">			
+			<ul class="rank-init-ul">
+				<li class="rank-init-li" ng-repeat=" x in datas ">
+					<a href="./comic.html?url={{ x.url }}" class="item-link">
+						<div class="item-cover-div">
+							<img src="{{ x.cover }}" alt="" class="item-cover">
+						</div>
+						<div class="item-info">
+							<strong class="item-title">{{ x.name }}</strong>
+							<!-- <small class="item-num">23400</small> -->
+							<small class="item-class">{{ x.latest }}</small>
+							<small class="item-time">{{ x.time }}</small>
+						</div>
+						<div class="item-number number{{ x.hot }}">{{ x.hot }}</div>
+					</a>
+				</li>
+			</ul>
+		</section>
+		<section class="load-more">
+			<div class="status-loading" style="display: none;">
+				<p class="loading-info">加载中...</p>
+			</div>
+			<div class="status-over">~已经到底了~</div>
+		</section>
+		<!-- 漫画loading -->
+		<div class="comic-loading comic-list-loading">
+			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
+		</div>
+	</div>
+	<script src="./js/jquery-3.4.1.min.js"></script>
+	<script src="./js/mock.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/rem.js"></script>
+	<script>
+		$(document).ready(function(){
+			
+			var datas = new Array();
+
+			$.ajax({
+				url: "http://47.114.147.221/?mhlb=hot",
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$.each(res.list, function(index, res){
+							res.hot = index;
+							if(res.url != null){
+								datas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});
+
+			if(datas != null){
+				//返回给ui	
+				$("#comicHot").attr("ng-init", "datas=["+datas+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+			}
+			
+		})
+	</script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</body>
+</html>

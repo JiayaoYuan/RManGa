@@ -1,0 +1,295 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>RManGa</title>
+	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/index.css">
+</head>	
+<body>
+	<div class="slcf_container">
+		<header>
+			<div class="head_container">
+				<div class="head_top">
+					<img class="head_logo" src="./img/logo-1.png" alt="">
+					<a href="javascript: void(0);"></a>
+				</div>
+			</div>
+		</header>
+		<!-- 轮播图 -->
+		<section class="ContentBase clearfix">			
+			<div class="slcf_banner">
+		    	<div class="slider_wrapper">
+					<ul class="list clearfix">
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner5.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner1.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner2.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner3.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner4.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner5.jpg">
+							</a>
+						</li>
+						<li>
+							<a href="javascript:;">
+								<img src="./img/banner/banner1.jpg">
+							</a>
+						</li>
+					</ul>
+					<ul class="slide_nav">
+						<li class="active"></li>
+						<li class=""></li>
+						<li class=""></li>
+						<li class=""></li>
+						<li class=""></li>
+					</ul>
+				</div>
+			</div>			
+		</section>
+		<!-- 漫画分类推荐 -->
+		<section class="ContentBase clearfix" ng-app="">
+			<div class="main-content">
+				<h1>国产漫画推荐</h1>
+				<div id="guochan" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in gcdatas">
+						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
+						</a>
+					</div>
+				</div>				
+			</div>
+			<div class="main-content">
+				<h1>日韩漫画推荐</h1>
+				<div id="rihan" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in rhdatas">
+						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
+						</a>
+					</div>
+				</div>				
+			</div>
+			<div class="main-content">
+				<h1>港台漫画推荐</h1>
+				<div id="gangtai" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in gtdatas">
+						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
+						</a>
+					</div>
+				</div>				
+			</div>
+			<!-- <div class="main-content">
+				<h1>欧美漫画推荐</h1>
+				<div id="omei" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in omdatas">
+						<a href="./comic.html"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
+						</a>
+					</div>
+				</div>				
+			</div> -->
+		</section>
+		<footer>
+	        <div class="foot_container">
+				<div class="footer_menu clearfix">
+		        	<a href="./category.html">
+						<img src="./img/fire1.png">						
+						<span>分类</span>
+					</a>
+					<a href="javascript: void()">
+						<img src="./img/fire2.png">
+						<span>首页</span>
+					</a>
+					<a href="./rank.html">
+						<img src="./img/fire3.png">
+						<span>排行</span>
+					</a>
+		        </div>
+	        </div>
+		</footer>
+		<!-- 漫画loading -->
+		<div class="comic-loading comic-list-loading">
+			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
+		</div>
+	</div>
+	<script src="./js/jquery-3.4.1.min.js"></script>
+	<script src="./js/mock.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/rem.js"></script>
+	<script src="./js/index.js"></script>
+		<script>
+		$(document).ready(function(){
+					
+			var gcdatas = new Array();
+			var rhdatas = new Array();
+			var gtdatas = new Array();
+			var omdatas = new Array();
+
+			console.log(numRandom(10));
+
+			//国产
+			$.ajax({
+				url: "http://47.114.147.221/?mhlb=guochan",
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$.each(res.list, function(index, res){
+							if(res.url != null){
+								gcdatas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});
+
+			//日韩
+			$.ajax({
+				url: "http://47.114.147.221/?mhlb=rihan",
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$.each(res.list, function(index, res){
+							if(res.url != null){
+								rhdatas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});
+
+			//港台
+			$.ajax({
+				url: "http://47.114.147.221/?mhlb=gangtai",
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$.each(res.list, function(index, res){
+							if(res.url != null){
+								gtdatas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});
+
+			//欧美
+			// $.ajax({
+			// 	url: "http://47.114.147.221/?mhlb=omei",
+			// 	type: "get",
+			// 	async: false,
+			// 	dataType: "json",
+			// 	success: function(res){					
+			// 		if(res.code == 0){
+			// 			$.each(res.list, function(index, res){
+			// 				if(res.url != null){
+			// 					omdatas.push(JSON.stringify(res));
+			// 				}
+			// 			})
+			// 		}
+			// 		console.log("访问： " + res.message);
+			// 	},
+			// 	error: function(err, xmlerr, htmlerr){
+			// 		console.log(xmlerr);
+			// 	}
+			// });
+
+			if(gcdatas != null){
+				var newdata = new Array();
+				var arr = numRandom(gcdatas.length, 6);				
+				for(var i = 0; i < arr.length; i++){
+					newdata.push(gcdatas[arr[i]]);
+				}
+				//返回给ui	
+				$("#guochan").attr("ng-init", "gcdatas=["+newdata+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+			}
+
+			if(rhdatas != null){
+				var newdata = new Array();
+				var arr = numRandom(rhdatas.length, 6);				
+				for(var i = 0; i < arr.length; i++){
+					newdata.push(rhdatas[arr[i]]);
+				}
+				//返回给ui	
+				$("#rihan").attr("ng-init", "rhdatas=["+newdata+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+			}
+
+			if(gtdatas != null){
+				var newdata = new Array();
+				var arr = numRandom(gtdatas.length, 6);				
+				for(var i = 0; i < arr.length; i++){
+					newdata.push(gtdatas[arr[i]]);
+				}
+				//返回给ui	
+				$("#gangtai").attr("ng-init", "gtdatas=["+newdata+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+			}
+
+			// if(omdatas != null){
+			// 	var newdata = new Array();
+			// 	var arr = numRandom(omdatas.length, 6);
+			//  for(var i = 0; i < arr.length; i++){
+			// 	 newdata.push(gtdatas[arr[i]]);
+			//  }
+			// 	//返回给ui	
+			// 	$("#omei").attr("ng-init", "omdatas=["+newdata+"]");
+			// 	//关闭加载
+			// 	$(".comic-loading").hide();
+			// }
+			
+		})
+	</script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</body>
+</html>

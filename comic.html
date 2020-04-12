@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="./css/base.css">
+	<link rel="stylesheet" href="./css/common.css">
+	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/comic.css">
+</head>	
+<body>
+	<div class="slcf_container" ng-app="" ng-init="">
+		<header>
+			<div class="head_container">
+				<div class="head_top">
+					<a class="goback" href="javascript: history.back();"></a>
+					<span class="title-name"></span>
+					<a href="javascript: void(0);"></a>
+				</div>
+			</div>
+		</header>
+		<!-- 漫画详细信息 -->
+		<section id="titleInfo" class="ContentBase clearfix" ng-init="">
+			<div class="comic-info-div">
+				<div class="comic-cover">
+					<img src="{{ titleInfo.cover }}" alt="" class="item-cover">
+				</div>
+				<div class="comic-info">
+					<strong class="info-title">{{ titleInfo.name }}</strong>
+					<small class="info-num">{{ titleInfo.tag }}</small>
+					<small class="info-class">{{ titleInfo.latest }}</small>
+					<small class="info-time">{{ titleInfo.time }}</small>
+					<small class="info-descript">{{ titleInfo.introduce }}</small>
+					<button class="read-btn" type="button">点击阅读</button>
+				</div>
+			</div>
+		</section>
+		<!-- 章节列表 -->
+		<section id="chapter" class="ContentBase clearfix" ng-init="">
+			<div class="main-content">
+				<h1>章节列表</h1>
+				<ul class="chapter-init-ul">
+					<li class="chapter-init-li" ng-repeat="x in datas">
+						<a href="./chapter.html?chapter={{ x.url }}&page={{ x.page }}&url={{ pathName }}" class="chapter-link">{{ x.num }}</a>
+					</li>
+				</ul>
+			</div>
+		</section>
+		<!-- 猜你喜欢 -->
+		<section class="ContentBase clearfix">			
+			<div class="main-content">
+				<h1>猜你喜欢</h1>
+				<div class="shop_package clearfix">
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+				</div>
+				<div class="shop_package clearfix">
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+					<div class="ship_pic_wrap">
+						<a href="javascript:"><img src="./img/manga1.jpg">
+							<span>伪恋</span>
+							<p>恋爱  校园</p>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+		<footer>
+	        <div class="foot_container">
+				<div class="footer_menu clearfix">
+		        	<a href="./category.html">
+						<img src="./img/fire1.png">						
+						<span>分类</span>
+					</a>
+					<a href="./index.html">
+						<img src="./img/fire2.png">
+						<span>首页</span>
+					</a>
+					<a href="./rank.html">
+						<img src="./img/fire3.png">
+						<span>排行</span>
+					</a>
+		        </div>
+	        </div>
+		</footer>
+		<!-- 漫画loading -->
+		<div class="comic-loading comic-list-loading">
+			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
+		</div>
+	</div>
+	<script src="./js/jquery-3.4.1.min.js"></script>
+	<script src="./js/mock.js"></script>
+	<script src="./js/common.js"></script>
+	<script src="./js/rem.js"></script>
+	<script>
+		$(document).ready(function(){
+			//获取漫画类型参数
+			var pathName = getQueryVariable("url");
+			var titleInfo = null;
+			var datas = new Array();
+			console.log("类型参数： " + pathName);
+
+			$(".slcf_container").attr("ng-init", "pathName='"+pathName+"'");
+
+			$.ajax({
+				url: "http://47.114.147.221/?mhurl1="+pathName,
+				type: "get",
+				async: false,
+				dataType: "json",
+				success: function(res){					
+					if(res.code == 0){
+						$("title").text(res.data.name + " - RManGa");
+						$(".title-name").text(res.data.name);
+						titleInfo = res.data;
+						$.each(res.list, function(index, res){
+							res.page = index;							
+							if(res.url != null){
+								if(res.page == 0){
+									res.page += 1;
+								}
+								datas.push(JSON.stringify(res));
+							}
+						})
+					}
+					console.log("访问： " + res.message);
+				},
+				error: function(err, xmlerr, htmlerr){
+					console.log(xmlerr);
+				}
+			});			
+
+			if(titleInfo != null){
+				$("#titleInfo").attr("ng-init", "titleInfo="+JSON.stringify(titleInfo));
+			}
+
+			if(datas != null){
+				//返回给ui	
+				$("#chapter").attr("ng-init", "datas=["+datas+"]");
+				//关闭加载
+				$(".comic-loading").hide();
+
+				$(".read-btn").click(function(){
+					var data1 = JSON.parse(datas[0]);
+					window.location = "./chapter.html?chapter="+data1.url+"&page=1&url="+pathName;
+				})
+			}
+			
+		})
+	</script>
+	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+</body>
+</html>

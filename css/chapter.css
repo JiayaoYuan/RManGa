@@ -1,0 +1,220 @@
+.float-bar{
+	position: fixed;
+	width: 100%;
+	max-width: 7.5rem;
+	height: 1rem;
+	line-height: 1rem;
+	margin: 0 auto;
+	background: #515151;
+	color: #ccc;
+	z-index: 999;
+}
+
+.float-bar-info{
+	padding-left: 1rem;
+	width: 50%;
+	font-size: .32rem;
+}
+
+.nav-ctrl-btn{
+	display: block;
+	width: 100%;
+	padding: .28rem 0;
+	background: #515151;
+	text-align: center;
+	font-size: .32rem;
+	color: #f2807d;
+}
+
+.nav-ctrl-btn:link{
+	color: #f2807d;
+}
+
+.prev{
+	position: relative;
+	border-bottom: 1px solid black;
+}
+
+.next{
+	position: relative;
+	border-top: .01rem solid black;
+}
+
+.top{
+	top: 0;	
+}
+
+.ontop{
+	top: 0;
+	-webkit-animation: ontop .3s;
+	-o-animation: ontop .3s;
+	animation: ontop .3s;
+}
+
+.downtop{
+	top: -1rem;
+	-webkit-animation: downtop .3s;
+	-o-animation: downtop .3s;
+	animation: downtop .3s;
+}
+
+.float-bar .goback, .float-bar .gohome, .float-bar .godescript{
+	position: absolute;
+	width: .5rem;
+	height: .5rem;
+	top: 50%;
+	transform: translateY(-50%);
+	text-align: center;
+	color: #fff;
+	font-weight: bold;
+	font-size: .32rem;
+}
+
+.float-bar .goback{
+	left: .35rem;
+    background: url(../img/goback2.png) no-repeat;
+    background-size: .5rem .5rem;
+}
+
+.float-bar .gohome{
+	right: .35rem;
+	width: .6rem;
+	height: .8rem;
+	background: url(../img/fire1.png) no-repeat;
+	background-size: .63rem .8rem;
+}
+
+.float-bar .godescript{
+	right: 1.2rem;
+	width: .6rem;
+	height: .8rem;
+	background: url(../img/fire2.png) no-repeat;
+	background-size: .63rem .8rem;
+}
+
+.bottom{
+	bottom: 0;
+}
+
+.onbottom{
+	bottom: 0;
+	-webkit-animation: onbottom .3s;
+	-o-animation: onbottom .3s;
+	animation: onbottom .3s;
+}
+
+.downbottom{
+	bottom: -1rem;
+	-webkit-animation: downbottom .3s;
+	-o-animation: downbottom .3s;
+	animation: downbottom .3s;
+}
+
+.chapter-prev-btn, .chapter-next-btn{
+	position: absolute;
+	top: .1rem;
+	width: 2rem;
+	height: .8rem;
+	line-height: .8rem;
+	border-radius: 1rem;
+	background: #313131;
+	color: #ccc;
+	text-align: center;
+	font-weight: bold;
+	border: .03rem solid #414141;
+}
+
+.chapter-prev-btn{
+	left: .6rem;
+}
+
+.chapter-next-btn{
+	right: .6rem;
+}
+
+.comic-pic-list-all{
+	width: 100%;
+	max-width: 7.5rem;
+	height: 100%;
+	background: #fff;
+}
+
+.comic-pic-ul{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 100%;
+}
+
+.comic-pic-li{
+	position: relative;
+	width: 100%;
+}
+
+.comic-pic-box{
+	width: 100%;
+	/*border-bottom: 0.03rem solid black;*/
+}
+
+.comic-pic{
+	display: block;
+	width: 100%;
+	height: auto;
+	overflow: hidden;
+}
+
+.comic-ctrl-box{
+	display: table;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	max-width: 7.5rem;
+	margin: 0 auto;
+	z-index: 998;
+}
+
+.comic-back-box{
+	width: 100%;
+	height: 100%;
+	background: rgba(81, 81, 81, .7);
+}
+
+
+
+
+@keyframes ontop
+{
+	0%   {top: -1rem}
+	25%  {top: -0.75rem;}
+	50%  {top: -0.5rem;}
+	75%  {top: -.25rem;}
+	100% {top: 0;}
+}
+
+@keyframes onbottom
+{
+	0%   {bottom: -1rem}
+	25%  {bottom: -0.75rem;}
+	50%  {bottom: -0.5rem;}
+	75%  {bottom: -0.25rem;}
+	100% {bottom: 0;}
+}
+
+@keyframes downtop
+{
+	0%   {top: 0rem}
+	25%  {top: -0.25rem;}
+	50%  {top: -0.5rem;}
+	75%  {top: -.75rem;}
+	100% {top: -1;}
+}
+
+@keyframes downbottom
+{
+	0%   {bottom: 0rem}
+	25%  {bottom: -0.25rem;}
+	50%  {bottom: -0.5rem;}
+	75%  {bottom: -0.75rem;}
+	100% {bottom: -1;}
+}

@@ -183,6 +183,8 @@
     transform: translateX(-50%);
     width: 90%;
     height: auto;
+    min-height: 2rem;
+    max-height: 3rem;
     overflow: hidden;
     border-radius: 10px;
 }

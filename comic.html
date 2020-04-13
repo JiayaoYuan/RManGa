@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title></title>
 	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="referrer" content="no-referrer"/>
+	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
@@ -132,32 +134,42 @@
 
 			$(".slcf_container").attr("ng-init", "pathName='"+pathName+"'");
 
-			$.ajax({
-				url: "http://47.114.147.221/?mhurl1="+pathName,
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
+			function getDatas(url, arrdatas){
+				console.log(url);
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){						
+						defer.resolve(res);						
+						console.log("访问： " + res.message);
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});
+				$.when(defer.promise()).done(function(res){
 					if(res.code == 0){
 						$("title").text(res.data.name + " - RManGa");
 						$(".title-name").text(res.data.name);
 						titleInfo = res.data;
 						$.each(res.list, function(index, res){
-							res.page = index;							
+							res.page = index;
 							if(res.url != null){
 								if(res.page == 0){
 									res.page += 1;
 								}
-								datas.push(JSON.stringify(res));
+								arrdatas.push(JSON.stringify(res));
 							}
 						})
 					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});			
+				})
+			};
+
+			pathName = "http://47.114.147.221/?mhurl1="+pathName;
+			getDatas( pathName , datas);			
 
 			if(titleInfo != null){
 				$("#titleInfo").attr("ng-init", "titleInfo="+JSON.stringify(titleInfo));
@@ -177,6 +189,6 @@
 			
 		})
 	</script>
-	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+	<script src="./js/angular.1.57.js"></script>
 </body>
 </html>

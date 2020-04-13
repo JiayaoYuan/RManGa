@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title>伪恋 - RManGa</title>
 	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="referrer" content="no-referrer"/>
+	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
@@ -68,57 +70,75 @@
 			console.log("漫画详细url： " + pathName2);
 			console.log("当前章节： " + page);			
 
-			//加载内容
-			$.ajax({
-				url: "http://47.114.147.221/?mhurl2="+pathName,
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
+			function getDatas1(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){						
+						defer.resolve(res);						
+						console.log("访问： " + res.message);
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});
+				$.when(defer.promise()).done(function(res){
 					if(res.code == 0){						
 						titleInfo = res.data;						
 						$.each(res.list, function(index, res){
 							if(index > 0){
-								datas.push(JSON.stringify(res));
+								arrdatas.push(JSON.stringify(res));
 							}
 						})
 					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});
+				})
+			};
 
-			//加载章节
-			$.ajax({
-				url: "http://47.114.147.221/?mhurl1="+pathName2,
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
+			function getDatas2(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){						
+						defer.resolve(res);						
+						console.log("访问： " + res.message);
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});
+				$.when(defer.promise()).done(function(res){
 					if(res.code == 0){
 						$("title").text(res.data.name + " - RManGa");
 						$(".title-name").text(res.data.name);
 						titleInfo = res.data;
 						$.each(res.list, function(index, res){
 							if(res.url != null){
-								pages.push(res);
+								arrdatas.push(res);
 							}
 						})
-					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});	
+					}				
+				})
+			};
+
+			//加载内容
+			var path = "http://47.114.147.221/?mhurl2="+pathName;
+			getDatas1( path, datas);
+
+			//加载章节
+			var path2 = "http://47.114.147.221/?mhurl1="+pathName2; 
+			getDatas2( path2, pages);
 
 			//上下章节
 			$(".prev").data("can-read", Number(page)-1);
 			$(".next").data("can-read", Number(page)+1);
 			prevPage = $(".prev").data("can-read");
-			nextPage = $(".next").data("can-read");			
+			nextPage = $(".next").data("can-read");
 
 			//如果是第一章
 			if(prevPage == 0){
@@ -152,6 +172,6 @@
 			
 		})
 	</script>
-	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+	<script src="./js/angular.1.57.js"></script>
 </body>
 </html>

@@ -202,3 +202,44 @@ function numRandom(long, geshu){
   }
   return num;
 }
+
+//延迟加载资源
+function deferload(){
+  window.onload = function(){
+      var url = new Array();
+      var imgAll = document.getElementsByTagName("img");
+
+      for(var i = 0; i < $(".slcf_container img").length; i++){
+        url.push(imgAll[i].getAttribute("src"));
+      }
+
+      var load_count = 1;   // 定义变量记录加载次数
+      // 设置定时器，3秒刷新一次
+      var timer = setInterval(function() {
+        //var img_id = document.getElementById("img1"); //若是jq，则直接将此代码换成 var img_id = $("#img_id"); 即可。
+        for(var i = 0; i < imgAll.length; i++){
+          var imgObj = new Image();
+          imgObj.setAttribute("src", imgAll[i].getAttribute("src"));                      //若是jq，则直接将此代码换成 imgObj.src = img_id.attr("src"); 即可。
+          console.log('当前资源链接：' + imgAll[i].src)
+          console.log("大小：" + imgObj.width + "*" + imgObj.height);
+          if (imgObj.width > 0 && imgObj.height > 0) {
+            console.log("Loading done。。。");
+            clearInterval(timer);     // 加载完成，清除定时器
+          } else {
+            if (load_count >= 2) {
+              // 替换后的链接仍加载失败，删除
+              imgAll[i].remove();
+              console.log("链接资源不存在，加载失败，删除。。。。。。");
+              clearInterval(timer);
+            } else {
+              console.log("First time load fail, Begin replace。。。。。。");
+              // 加载失败，替换img标签的src属性链接
+              imgAll[i].setAttribute("src", url[i]);
+              load_count++;
+              console.log('替换后：' + imgAll[i].getAttribute("src"));
+            }
+          }
+        }        
+      }, 3 * 1000);
+    };
+}

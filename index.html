@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title>RManGa</title>
 	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="referrer" content="no-referrer"/>
+	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
@@ -27,17 +29,17 @@
 					<ul class="list clearfix">
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner5.jpg">
+								<img class="img1" src="./img/banner/banner5.jpg">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner1.jpg">
+								<img class="img2" src="./img/banner/banner1.jpg">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner2.jpg">
+								<img class="img3" src="./img/banner/banner2.jpg">
 							</a>
 						</li>
 						<li>
@@ -85,17 +87,6 @@
 				</div>				
 			</div>
 			<div class="main-content">
-				<h1>日韩漫画推荐</h1>
-				<div id="rihan" class="shop_package clearfix" ng-init="">
-					<div class="ship_pic_wrap" ng-repeat="x in rhdatas">
-						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
-							<span>{{ x.name }}</span>
-							<p>{{ x.latest }}</p>
-						</a>
-					</div>
-				</div>				
-			</div>
-			<div class="main-content">
 				<h1>港台漫画推荐</h1>
 				<div id="gangtai" class="shop_package clearfix" ng-init="">
 					<div class="ship_pic_wrap" ng-repeat="x in gtdatas">
@@ -106,6 +97,17 @@
 					</div>
 				</div>				
 			</div>
+			<div class="main-content">
+				<h1>日韩漫画推荐</h1>
+				<div id="rihan" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in rhdatas">
+						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
+						</a>
+					</div>
+				</div>				
+			</div>			
 			<!-- <div class="main-content">
 				<h1>欧美漫画推荐</h1>
 				<div id="omei" class="shop_package clearfix" ng-init="">
@@ -153,90 +155,44 @@
 			var rhdatas = new Array();
 			var gtdatas = new Array();
 			var omdatas = new Array();
+			
+			function getDatas(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){						
+						defer.resolve(res);						
+						console.log("访问： " + res.message);
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});
+				$.when(defer.promise()).done(function(res){
+					if(res.code == 0){
+						$.each(res.list, function(index, res){
+							if(res.url != null){
+								arrdatas.push(JSON.stringify(res));
+							}
+						})
+					}
+				})
+			}			
 
 			//国产
-			$.ajax({
-				url: "http://47.114.147.221/?mhlb=guochan",
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								gcdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});
+			getDatas("http://47.114.147.221/?mhlb=guochan", gcdatas);
 
 			//日韩
-			$.ajax({
-				url: "http://47.114.147.221/?mhlb=rihan",
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								rhdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});
+			getDatas("http://47.114.147.221/?mhlb=rihan", rhdatas);
 
 			//港台
-			$.ajax({
-				url: "http://47.114.147.221/?mhlb=gangtai",
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								gtdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});
+			getDatas("http://47.114.147.221/?mhlb=gangtai", gtdatas);
 
 			//欧美
-			// $.ajax({
-			// 	url: "http://47.114.147.221/?mhlb=omei",
-			// 	type: "get",
-			// 	async: false,
-			// 	dataType: "json",
-			// 	success: function(res){					
-			// 		if(res.code == 0){
-			// 			$.each(res.list, function(index, res){
-			// 				if(res.url != null){
-			// 					omdatas.push(JSON.stringify(res));
-			// 				}
-			// 			})
-			// 		}
-			// 		console.log("访问： " + res.message);
-			// 	},
-			// 	error: function(err, xmlerr, htmlerr){
-			// 		console.log(xmlerr);
-			// 	}
-			// });
+			// getDatas("http://47.114.147.221/?mhlb=omei");
 
 			if(gcdatas != null){
 				var newdata = new Array();
@@ -262,6 +218,7 @@
 				$(".comic-loading").hide();
 			}
 
+
 			if(gtdatas != null){
 				var newdata = new Array();
 				var arr = numRandom(gtdatas.length, 6);				
@@ -272,7 +229,7 @@
 				$("#gangtai").attr("ng-init", "gtdatas=["+newdata+"]");
 				//关闭加载
 				$(".comic-loading").hide();
-			}
+			}			
 
 			// if(omdatas != null){
 			// 	var newdata = new Array();
@@ -286,8 +243,9 @@
 			// 	$(".comic-loading").hide();
 			// }
 			
+			//deferload();
 		})
 	</script>
-	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+	<script src="./js/angular.1.57.js"></script>
 </body>
 </html>

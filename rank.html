@@ -4,6 +4,8 @@
 	<meta charset="UTF-8">
 	<title>排行 - RManGa</title>
 	<meta name="app-mobile-web-app-capable" content="yes">
+	<meta name="referrer" content="no-referrer"/>
+	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
@@ -61,26 +63,33 @@
 			
 			var datas = new Array();
 
-			$.ajax({
-				url: "http://47.114.147.221/?mhlb=hot",
-				type: "get",
-				async: false,
-				dataType: "json",
-				success: function(res){					
+			function getDatas(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){						
+						defer.resolve(res);						
+						console.log("访问： " + res.message);
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});
+				$.when(defer.promise()).done(function(res){
 					if(res.code == 0){
 						$.each(res.list, function(index, res){
-							res.hot = index;
 							if(res.url != null){
-								datas.push(JSON.stringify(res));
+								arrdatas.push(JSON.stringify(res));
 							}
 						})
 					}
-					console.log("访问： " + res.message);
-				},
-				error: function(err, xmlerr, htmlerr){
-					console.log(xmlerr);
-				}
-			});
+				})
+			}
+
+			getDatas("http://47.114.147.221/?mhlb=hot", datas);
 
 			if(datas != null){
 				//返回给ui	
@@ -91,6 +100,6 @@
 			
 		})
 	</script>
-	<script src="https://cdn.staticfile.org/angular.js/1.4.6/angular.min.js"></script>
+	<script src="./js/angular.1.57.js"></script>
 </body>
 </html>

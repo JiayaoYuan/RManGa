@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="./css/base.css">
 	<link rel="stylesheet" href="./css/common.css">
 	<link rel="stylesheet" href="./css/index.css">
-	<link rel="stylesheet" href="./css/comic.css">
+	<link rel="stylesheet" href="./css/comic.css">	
 </head>	
 <body>
 	<div class="slcf_container" ng-app="" ng-init="">
@@ -55,46 +55,14 @@
 		<section class="ContentBase clearfix">			
 			<div class="main-content">
 				<h1>猜你喜欢</h1>
-				<div class="shop_package clearfix">
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
+				<div id="nixihuan" class="shop_package clearfix" ng-init="">
+					<div class="ship_pic_wrap" ng-repeat="x in nixihuan">
+						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
+							<span>{{ x.name }}</span>
+							<p>{{ x.latest }}</p>
 						</a>
 					</div>
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
-						</a>
-					</div>
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
-						</a>
-					</div>
-				</div>
-				<div class="shop_package clearfix">
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
-						</a>
-					</div>
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
-						</a>
-					</div>
-					<div class="ship_pic_wrap">
-						<a href="javascript:"><img src="./img/manga1.jpg">
-							<span>伪恋</span>
-							<p>恋爱  校园</p>
-						</a>
-					</div>
-				</div>
+				</div>				
 			</div>
 		</section>
 		<footer>
@@ -130,63 +98,117 @@
 			var pathName = getQueryVariable("url");
 			var titleInfo = null;
 			var datas = new Array();
+			var nixihuan = new Array();
+
 			console.log("类型参数： " + pathName);
 
 			$(".slcf_container").attr("ng-init", "pathName='"+pathName+"'");
 
 			function getDatas(url, arrdatas){
-				console.log(url);
 				var defer = $.Deferred();				
 				$.ajax({
 					url: url,
 					type: "get",
 					async: false,
 					dataType: "json",
-					success: function(res){						
-						defer.resolve(res);						
+					success: function(res){
+							defer.resolve(res);
+							//关闭加载
+							$(".comic-loading").hide();
+							$.when(defer.promise()).done(function(res){
+								$("title").text(res.data.name + " - RManGa");
+								$(".title-name").text(res.data.name);
+								res.data.cover = res.data.cover.replace(/http:/,"");
+								res.data.cover = res.data.cover.replace(/https:/,"");
+								res.data.cover = "http:" + res.data.cover;
+								titleInfo = res.data;								
+								if(res.list != ""){
+									$.each(res.list, function(index, item){
+										item.page = index;										
+										if(item.url != null){
+											if(item.page == 0){
+												item.page += 1;
+											}											
+											arrdatas.push(JSON.stringify(item));
+										}
+									})
+								}
+							})
+						// }else{
+						// 	//关闭加载
+						// 	$(".loading-gif").hide();
+						// 	$(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+						// }
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});				
+			};
+
+			function getDatas2(url, arrdatas, sel){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);
+							//关闭加载
+							$(".comic-loading").hide();
+							$.when(defer.promise()).done(function(res){								
+								if(res.list != ""){									
+									$.each(res.list, function(index, item){										
+										if(item.url != null){
+											arrdatas.push(JSON.stringify(item));
+										};
+									})
+								}else{
+									$("#"+sel).parent().hide();
+								}
+							})
+						}
 						console.log("访问： " + res.message);
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){
-						$("title").text(res.data.name + " - RManGa");
-						$(".title-name").text(res.data.name);
-						titleInfo = res.data;
-						$.each(res.list, function(index, res){
-							res.page = index;
-							if(res.url != null){
-								if(res.page == 0){
-									res.page += 1;
-								}
-								arrdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-				})
-			};
+				});				
+			}
 
-			pathName = "http://47.114.147.221/?mhurl1="+pathName;
-			getDatas( pathName , datas);			
+			//猜你喜欢
+			getDatas2("http://47.114.147.221/?mhlb=shaonianrexue", nixihuan , "nixihuan");
+
+			var pathName2 = "http://47.114.147.221/?mhurl1="+pathName;
+			getDatas( pathName2 , datas);	
 
 			if(titleInfo != null){
 				$("#titleInfo").attr("ng-init", "titleInfo="+JSON.stringify(titleInfo));
 			}
 
-			if(datas != null){
+			if(datas.length > 1){
 				//返回给ui	
-				$("#chapter").attr("ng-init", "datas=["+datas+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+				$("#chapter").attr("ng-init", "datas=["+datas+"]");				
 
 				$(".read-btn").click(function(){
 					var data1 = JSON.parse(datas[0]);
 					window.location = "./chapter.html?chapter="+data1.url+"&page=1&url="+pathName;
 				})
 			}
+
+			if(nixihuan.length > 1){				
+				var newdata = new Array();
+				var arr = numRandom(nixihuan.length, 6);				
+				for(var i = 0; i < arr.length; i++){
+					newdata.push(nixihuan[arr[i]]);
+				}
+				//返回给ui	
+				$("#nixihuan").attr("ng-init", "nixihuan=["+newdata+"]");				
+			}
 			
+			deferload();
 		})
 	</script>
 	<script src="./js/angular.1.57.js"></script>

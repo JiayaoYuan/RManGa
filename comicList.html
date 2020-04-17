@@ -23,11 +23,7 @@
 					<a href="javascript: void(0);"></a>
 				</div>
 			</div>
-		</header>
-		<!-- 漫画loading -->
-		<div class="comic-loading comic-list-loading">
-			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
-		</div>
+		</header>		
 		<!-- 漫画列表 -->
 		<section id="comicList" class="ContentBase clearfix" ng-app="" ng-init="">			
 			<ul class="rank-init-ul">
@@ -51,7 +47,11 @@
 				<p class="loading-info">加载中...</p>
 			</div>
 			<div class="status-over">~已经到底了~</div>
-		</section>		
+		</section>
+		<!-- 漫画loading -->
+		<div class="comic-loading comic-list-loading">
+			<img class="loading-gif" src="./img/loading/loading.gif" alt="">			
+		</div>
 	</div>
 	<script src="./js/jquery-3.4.1.min.js"></script>
 	<script src="./js/mock.js"></script>
@@ -72,22 +72,36 @@
 					async: false,
 					dataType: "json",
 					success: function(res){						
-						defer.resolve(res);						
+						if(res.code == 0){
+							defer.resolve(res);
+							//关闭加载
+							$(".comic-loading").hide();
+							$.when(defer.promise()).done(function(res){
+								if(res.list != ""){
+									if(Number(res.list[0].number) > 1){
+										$.each(res.list, function(index, res){
+											if(res.url != null){
+												arrdatas.push(JSON.stringify(res));
+											}
+										})
+									}else{
+										//关闭加载		
+										$(".loading-gif").hide();
+										$(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+									}
+								}else{
+									//关闭加载		
+									$(".loading-gif").hide();
+									$(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+								}														
+							})
+						}						
 						console.log("访问： " + res.message);
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								arrdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-				})
+				});				
 			}
 
 			pathName = "http://47.114.147.221/?mhlb="+pathName; 
@@ -96,9 +110,7 @@
 
 			if(datas != null){
 				//返回给ui	
-				$("#comicList").attr("ng-init", "datas=["+datas+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+				$("#comicList").attr("ng-init", "datas=["+datas+"]");				
 			}
 			
 		})

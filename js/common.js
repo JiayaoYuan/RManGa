@@ -186,7 +186,7 @@ function numRandom(long, geshu){
   for(var i = 0; i < geshu; i++){                 
     do{
       var count = 0;
-      newnum = Math.floor((Math.random()*long)+1);
+      newnum = Math.floor((Math.random()*long));
       for(var i = 0; i < num.length; i++){              
         if(newnum != num[i]){
           count++;                
@@ -207,10 +207,12 @@ function numRandom(long, geshu){
 function deferload(){
   window.onload = function(){
       var url = new Array();
+      var srctext = "";
       var imgAll = document.getElementsByTagName("img");
 
       for(var i = 0; i < $(".slcf_container img").length; i++){
-        url.push(imgAll[i].getAttribute("src"));
+        srctext = imgAll[i].getAttribute("src");
+        url.push(srctext.replace("http:", "https:"));
       }
 
       var load_count = 1;   // 定义变量记录加载次数

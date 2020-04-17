@@ -7,59 +7,71 @@
 	<meta name="referrer" content="no-referrer"/>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
-	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
 	<link rel="stylesheet" href="./css/common.css">
-	<link rel="stylesheet" href="./css/index.css">
+	<link rel="stylesheet" href="./css/index.css">	
+	<script src="./js/datas.js"></script>
 </head>	
 <body>
-	<div class="slcf_container">
+	<div class="slcf_container" ng-app="">
 		<header>
 			<div class="head_container">
 				<div class="head_top">
 					<img class="head_logo" src="./img/logo-1.png" alt="">
-					<a href="javascript: void(0);"></a>
+					<a class="search-link" href="javascript: void(0);"></a>
 				</div>
 			</div>
 		</header>
+		<!-- 搜索 -->
+		<section id="searchMG" style="display: none;">
+			<div class="search-box">
+				<input class="search-box-text search-font" type="text">
+			</div>
+			<div class="search-content">	
+				<ul class="search-init-ul">
+					
+				</ul>
+			</div>
+		</section>
 		<!-- 轮播图 -->
-		<section class="ContentBase clearfix">			
+		<section class="ContentBase clearfix">
 			<div class="slcf_banner">
 		    	<div class="slider_wrapper">
 					<ul class="list clearfix">
 						<li>
 							<a href="javascript:;">
-								<img class="img1" src="./img/banner/banner5.jpg">
+								<img class="img1" src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img class="img2" src="./img/banner/banner1.jpg">
+								<img class="img2" src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img class="img3" src="./img/banner/banner2.jpg">
+								<img class="img3" src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner3.jpg">
+								<img src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner4.jpg">
+								<img src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner5.jpg">
+								<img src="#">
 							</a>
 						</li>
 						<li>
 							<a href="javascript:;">
-								<img src="./img/banner/banner1.jpg">
+								<img src="#">
 							</a>
 						</li>
 					</ul>
@@ -74,9 +86,9 @@
 			</div>			
 		</section>
 		<!-- 漫画分类推荐 -->
-		<section class="ContentBase clearfix" ng-app="">
+		<section class="ContentBase clearfix">
 			<div class="main-content">
-				<h1>国产漫画推荐</h1>
+				<h1>热血漫画推荐</h1>
 				<div id="guochan" class="shop_package clearfix" ng-init="">
 					<div class="ship_pic_wrap" ng-repeat="x in gcdatas">
 						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
@@ -87,7 +99,7 @@
 				</div>				
 			</div>
 			<div class="main-content">
-				<h1>港台漫画推荐</h1>
+				<h1>恋爱漫画推荐</h1>
 				<div id="gangtai" class="shop_package clearfix" ng-init="">
 					<div class="ship_pic_wrap" ng-repeat="x in gtdatas">
 						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
@@ -98,7 +110,7 @@
 				</div>				
 			</div>
 			<div class="main-content">
-				<h1>日韩漫画推荐</h1>
+				<h1>生活漫画推荐</h1>
 				<div id="rihan" class="shop_package clearfix" ng-init="">
 					<div class="ship_pic_wrap" ng-repeat="x in rhdatas">
 						<a href="./comic.html?url={{ x.url }}"><img src="{{ x.cover }}">
@@ -120,6 +132,7 @@
 				</div>				
 			</div> -->
 		</section>
+
 		<footer>
 	        <div class="foot_container">
 				<div class="footer_menu clearfix">
@@ -146,55 +159,82 @@
 	<script src="./js/jquery-3.4.1.min.js"></script>
 	<script src="./js/mock.js"></script>
 	<script src="./js/common.js"></script>
-	<script src="./js/rem.js"></script>
-	<script src="./js/index.js"></script>
-		<script>
+	<script src="./js/rem.js"></script>	
+	<script src="./js/index.js"></script>		
+	<script>
 		$(document).ready(function(){
-					
 			var gcdatas = new Array();
 			var rhdatas = new Array();
 			var gtdatas = new Array();
-			var omdatas = new Array();
 			
-			function getDatas(url, arrdatas){
+			function getDatas(url, arrdatas, sel){
 				var defer = $.Deferred();				
 				$.ajax({
 					url: url,
 					type: "get",
 					async: false,
 					dataType: "json",
-					success: function(res){						
-						defer.resolve(res);						
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);
+							//关闭加载
+							$(".comic-loading").hide();
+							$.when(defer.promise()).done(function(res){	
+								if(res.list != ""){
+									if(Number(res.list[0].number) > 1){									
+										$.each(res.list, function(index, item){										
+											if(item.url != null){
+												arrdatas.push(JSON.stringify(item));
+											};
+										})
+									}
+								}
+							})
+						}
 						console.log("访问： " + res.message);
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								arrdatas.push(JSON.stringify(res));
-							}
-						})
+				});				
+			}
+
+			function getNameDatas(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: "http://47.114.147.221/?mhname="+url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);
+							$.when(defer.promise()).done(function(res){	
+								if(res.list != ""){																				
+									arrdatas.push(JSON.stringify(res.list[0]));
+								}
+							})
+						}
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
 					}
-				})
+				});				
 			}			
 
-			//国产
-			getDatas("http://47.114.147.221/?mhlb=guochan", gcdatas);
+			//少年
+			getDatas("http://47.114.147.221/?mhlb=shaonianrexue", gcdatas , "guochan");
 
-			//日韩
-			getDatas("http://47.114.147.221/?mhlb=rihan", rhdatas);
+			//恋爱
+			getDatas("http://47.114.147.221/?mhlb=lianaishenghuo", rhdatas , "gangtai");
 
-			//港台
-			getDatas("http://47.114.147.221/?mhlb=gangtai", gtdatas);
+			//生活
+			getDatas("http://47.114.147.221/?mhlb=shenghuomanhua", gtdatas , "rihan");
 
 			//欧美
 			// getDatas("http://47.114.147.221/?mhlb=omei");
 
-			if(gcdatas != null){
+			if(gcdatas.length > 1){				
 				var newdata = new Array();
 				var arr = numRandom(gcdatas.length, 6);				
 				for(var i = 0; i < arr.length; i++){
@@ -202,11 +242,16 @@
 				}
 				//返回给ui	
 				$("#guochan").attr("ng-init", "gcdatas=["+newdata+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+			}else{
+				var newdata = new Array();
+				var arr = numRandom(namelist.length, 6);
+				for(var i = 0; i < arr.length; i++){
+					getNameDatas(namelist[arr[i]].name, newdata);					
+				}
+				$("#guochan").attr("ng-init", "gcdatas=["+newdata+"]");
 			}
 
-			if(rhdatas != null){
+			if(rhdatas.length > 1){				
 				var newdata = new Array();
 				var arr = numRandom(rhdatas.length, 6);				
 				for(var i = 0; i < arr.length; i++){
@@ -214,12 +259,16 @@
 				}
 				//返回给ui	
 				$("#rihan").attr("ng-init", "rhdatas=["+newdata+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+			}else{
+				var newdata = new Array();
+				var arr = numRandom(namelist.length, 6);
+				for(var i = 0; i < arr.length; i++){
+					getNameDatas(namelist[arr[i]].name, newdata);					
+				}
+				$("#rihan").attr("ng-init", "rhdatas=["+newdata+"]");
 			}
 
-
-			if(gtdatas != null){
+			if(gtdatas.length > 1){				
 				var newdata = new Array();
 				var arr = numRandom(gtdatas.length, 6);				
 				for(var i = 0; i < arr.length; i++){
@@ -227,23 +276,14 @@
 				}
 				//返回给ui	
 				$("#gangtai").attr("ng-init", "gtdatas=["+newdata+"]");
-				//关闭加载
-				$(".comic-loading").hide();
-			}			
-
-			// if(omdatas != null){
-			// 	var newdata = new Array();
-			// 	var arr = numRandom(omdatas.length, 6);
-			//  for(var i = 0; i < arr.length; i++){
-			// 	 newdata.push(gtdatas[arr[i]]);
-			//  }
-			// 	//返回给ui	
-			// 	$("#omei").attr("ng-init", "omdatas=["+newdata+"]");
-			// 	//关闭加载
-			// 	$(".comic-loading").hide();
-			// }
-			
-			//deferload();
+			}else{
+				var newdata = new Array();
+				var arr = numRandom(namelist.length, 6);
+				for(var i = 0; i < arr.length; i++){
+					getNameDatas(namelist[arr[i]].name, newdata);					
+				}
+				$("#gangtai").attr("ng-init", "gtdatas=["+newdata+"]");
+			}	
 		})
 	</script>
 	<script src="./js/angular.1.57.js"></script>

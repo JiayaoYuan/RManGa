@@ -53,6 +53,7 @@
 
 .downtop{
 	top: -1rem;
+	z-index: 1000;
 	-webkit-animation: downtop .3s;
 	-o-animation: downtop .3s;
 	animation: downtop .3s;
@@ -105,6 +106,7 @@
 
 .downbottom{
 	bottom: -1rem;
+	z-index: 1000;
 	-webkit-animation: downbottom .3s;
 	-o-animation: downbottom .3s;
 	animation: downbottom .3s;
@@ -133,6 +135,7 @@
 }
 
 .comic-pic-list-all{
+	position: absolute;
 	width: 100%;
 	max-width: 7.5rem;
 	height: 100%;

@@ -26,7 +26,7 @@
 		<section class="comic-pic-list-all clearfix" id="open-ctrl" ng-app="" ng-init="">
 			<a href="javascript: void(0);" class="nav-ctrl-btn prev" data-can-read="">点击加载上一章</a>
 			<!-- 漫画图片插入 -->		
-			<section>
+			<section class="comic-pic-insert">
 				<ul class="comic-pic-ul">
 					<li class="comic-pic-li" data-cid="1" data-index="1" ng-repeat=" x in datas">
 						<div class="comic-pic-box">
@@ -77,24 +77,29 @@
 					type: "get",
 					async: false,
 					dataType: "json",
-					success: function(res){						
-						defer.resolve(res);						
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);
+							$(".comic-loading").hide();
+							$.when(defer.promise()).done(function(res){					
+								titleInfo = res.data;						
+								$.each(res.list, function(index, res){
+									if(index > 0){
+										arrdatas.push(JSON.stringify(res));
+									}
+								})
+							})
+						}else{
+							//关闭加载		
+							$(".loading-gif").hide();
+							$(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+						}
 						console.log("访问： " + res.message);
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){						
-						titleInfo = res.data;						
-						$.each(res.list, function(index, res){
-							if(index > 0){
-								arrdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-				})
+				});				
 			};
 
 			function getDatas2(url, arrdatas){
@@ -104,33 +109,30 @@
 					type: "get",
 					async: false,
 					dataType: "json",
-					success: function(res){						
-						defer.resolve(res);						
-						console.log("访问： " + res.message);
+					success: function(res){												
+						defer.resolve(res);
+						$.when(defer.promise()).done(function(res){
+							$("title").text(res.data.name + " - RManGa");
+							$(".title-name").text(res.data.name);
+							titleInfo = res.data;
+							$.each(res.list, function(index, item){
+								if(item.url != null){
+									arrdatas.push(item);
+								}
+							});
+						})						
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){
-						$("title").text(res.data.name + " - RManGa");
-						$(".title-name").text(res.data.name);
-						titleInfo = res.data;
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								arrdatas.push(res);
-							}
-						})
-					}				
-				})
+				});				
 			};
 
 			//加载内容
 			var path = "http://47.114.147.221/?mhurl2="+pathName;
 			getDatas1( path, datas);
 
-			//加载章节
+			// //加载章节
 			var path2 = "http://47.114.147.221/?mhurl1="+pathName2; 
 			getDatas2( path2, pages);
 
@@ -144,6 +146,7 @@
 			if(prevPage == 0){
 				$(".prev").text("已经是第一章")
 				$(".chapter-prev-btn").css("background-color", "#ddd");
+				console.log("已经是第一章");
 			}else{
 				$(".prev").css("z-index", 20000);
 				$(".prev").attr("href", "./chapter.html?chapter="+pages[prevPage].url+"&page="+prevPage+"&url="+pathName2);
@@ -154,6 +157,7 @@
 			if(nextPage > pages.length){				
 				$(".next").text("已经是最后一章");
 				$(".chapter-next-btn").css("background-color", "#ddd");
+				console.log("已经是最后一章");
 			}else{
 				$(".next").css("z-index", 20000);
 				$(".next").attr("href", "./chapter.html?chapter="+pages[nextPage].url+"&page="+nextPage+"&url="+pathName2);
@@ -165,9 +169,7 @@
 
 			if(datas != null){
 				//返回给ui	
-				$("#open-ctrl").attr("ng-init", "datas=["+datas+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+				$("#open-ctrl").attr("ng-init", "datas=["+datas+"]");				
 			}
 			
 		})

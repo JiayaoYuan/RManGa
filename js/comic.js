@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	//漫画阅读器点击 打开 控制面板
-	$(".slcf_container").on("click", "#open-ctrl, .comic-loading",function(){
+	$(".slcf_container").on("click", "#open-ctrl .comic-pic-insert, .comic-loading",function(){
 		$(".float-bar").show();
 		$(".top").removeClass("downtop");
 		$(".bottom").removeClass("downbottom");

@@ -236,7 +236,7 @@ $(document).ready(function(){
 	function getDatas(url, arrdatas){
 		var defer = $.Deferred();				
 		$.ajax({
-			url: "http://47.114.147.221/?mhname="+url,
+			url: mhname+url,
 			type: "get",
 			async: false,
 			dataType: "json",

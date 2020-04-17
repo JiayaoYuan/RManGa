@@ -7,7 +7,7 @@
 	<meta name="referrer" content="no-referrer"/>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no, viewport-fit=cover">
-	<link rel="stylesheet" href="http://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
+	<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.css">
 	<link rel="stylesheet" href="./css/base.css">
 	<link rel="stylesheet" href="./css/common.css">
 	<link rel="stylesheet" href="./css/index.css">	
@@ -202,7 +202,7 @@
 			function getNameDatas(url, arrdatas){
 				var defer = $.Deferred();				
 				$.ajax({
-					url: "http://47.114.147.221/?mhname="+url,
+					url: mhname+url,
 					type: "get",
 					async: false,
 					dataType: "json",
@@ -223,16 +223,16 @@
 			}			
 
 			//少年
-			getDatas("http://47.114.147.221/?mhlb=shaonianrexue", gcdatas , "guochan");
+			getDatas(mhlb+"shaonianrexue", gcdatas , "guochan");
 
 			//恋爱
-			getDatas("http://47.114.147.221/?mhlb=lianaishenghuo", rhdatas , "gangtai");
+			getDatas(mhlb+"lianaishenghuo", rhdatas , "gangtai");
 
 			//生活
-			getDatas("http://47.114.147.221/?mhlb=shenghuomanhua", gtdatas , "rihan");
+			getDatas(mhlb+"shenghuomanhua", gtdatas , "rihan");
 
 			//欧美
-			// getDatas("http://47.114.147.221/?mhlb=omei");
+			// getDatas(mhlb+"omei");
 
 			if(gcdatas.length > 1){				
 				var newdata = new Array();

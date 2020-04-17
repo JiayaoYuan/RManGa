@@ -48,3 +48,8 @@ var namelist = [
       {"name" : "王牌校草"},
       {"name" : "骑士幻想夜"}
   ];
+
+var mhname = "https://api.pingcc.cn/?mhname=";
+var mhlb = "https://api.pingcc.cn/?mhlb=";
+var mhurl1 = "https://api.pingcc.cn/?mhurl1=";
+var mhurl2 = "https://api.pingcc.cn/?mhurl2=";

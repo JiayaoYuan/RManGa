@@ -23,7 +23,7 @@ $(document).ready(function(){
 		//最新
 		var defer = $.Deferred();	
 		$.ajax({
-			url: "http://47.114.147.221/?mhlb=shaonianrexue",
+			url: mhlb+"shaonianrexue",
 			type: "get",
 			async: false,
 			dataType: "json",
@@ -78,7 +78,7 @@ $(document).ready(function(){
 			var url = "";
 			for(var i = 0; i < randomNum.length; i++){
 				var defer = $.Deferred();	
-				url = "http://47.114.147.221/?mhname="+namelist[randomNum[i]].name;
+				url = mhname+namelist[randomNum[i]].name;
 				$.ajax({
 					url: url,
 					type: "get",

@@ -29,10 +29,10 @@ $(document).ready(function(){
 			dataType: "json",
 			success: function(res){					
 				if(res.code == 0){
-					defer.resolve(res);
+					defer.resolve(res);					
 					$.when(defer.promise()).done(function(res){
-						if(res.list != ""){
-							if(Number(res.list[0].number ) > 1){
+						if(res.list != ""){							
+							if(Number(res.list[0].number) > 1){
 								$.each(res.list, function(index, res){
 									if(res.url != null){
 										datas.push(res);
@@ -47,9 +47,9 @@ $(document).ready(function(){
 			error: function(err, xmlerr, htmlerr){
 				console.log(xmlerr);
 			}
-		});
+		});		
 
-		if(datas.length == 5){
+		if(datas.length >= 5){
 			randomNum = numRandom(datas.length, 5);
 			for(var i = 0; i < randomNum.length; i++){
 				newdatas.push(datas[randomNum[i]]);
@@ -60,7 +60,7 @@ $(document).ready(function(){
 			imgnames.push(imgnames[0]);
 			imgnames.push(imgnames[1]);
 			newdatas.push(newdatas[0]);
-			newdatas.push(newdatas[1]);
+			newdatas.push(newdatas[1]);			
 
 			for(var i=0;i<lis.length;i++){
 				var img = lis[i].getElementsByTagName("img")[0];		

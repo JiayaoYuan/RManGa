@@ -53,3 +53,8 @@ var mhname = "https://api.pingcc.cn/?mhname=";
 var mhlb = "https://api.pingcc.cn/?mhlb=";
 var mhurl1 = "https://api.pingcc.cn/?mhurl1=";
 var mhurl2 = "https://api.pingcc.cn/?mhurl2=";
+
+var arrPageName = new Array(); //单页所有姓名
+var isComplete = false; //当前页是否完成   
+var manhuaNum = 0 //单页漫画的数量
+var loadData = new Array(); //加载过的数据

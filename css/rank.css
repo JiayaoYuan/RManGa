@@ -77,7 +77,8 @@
 
 .load-more{
 	text-align: center;
-	padding: .45rem 0;
+	height: 1.2rem;
+	line-height: 1.2rem;
 	border-radius: 50% 50% 0 0;
 	background: #fff;
 }

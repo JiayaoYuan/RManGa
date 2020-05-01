@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="./css/common.css">
 	<link rel="stylesheet" href="./css/index.css">
 	<link rel="stylesheet" href="./css/rank.css">
+	<script src="./js/datas.js"></script>
 </head>	
 <body>
 	<div class="slcf_container">
@@ -20,10 +21,23 @@
 				<div class="head_top">					
 					<a class="goback" href="javascript: history.back();"></a>
 					<span>排行</span>
-					<a href="javascript: void(0);"></a>
+					<a class="search-link" href="javascript: void(0);"></a>
 				</div>
 			</div>
 		</header>
+		<!-- 搜索 -->
+		<section id="searchMG" style="display: none;">
+			<div class="search-box">
+				<form action="javascript:return true">
+				    <input class="search-box-text search-font" type="search" :placeholder="请输入" autofocus @keyup.13="enterClick"/>
+				</form>
+			</div>
+			<div class="search-content">	
+				<ul class="search-init-ul">
+					
+				</ul>
+			</div>
+		</section>
 		<!-- 漫画排行 -->
 		<section id="comicHot" class="ContentBase clearfix" ng-app="" ng-init="">			
 			<ul class="rank-init-ul">
@@ -38,7 +52,7 @@
 							<small class="item-class">{{ x.latest }}</small>
 							<small class="item-time">{{ x.time }}</small>
 						</div>
-						<div class="item-number number{{ x.hot }}">{{ x.hot }}</div>
+						<div class="item-number number{{ x.page }}">{{ x.page }}</div>
 					</a>
 				</li>
 			</ul>
@@ -73,29 +87,67 @@
 					success: function(res){						
 						defer.resolve(res);						
 						console.log("访问： " + res.message);
+						//关闭加载
+						$(".comic-loading").hide();
+						$.when(defer.promise()).done(function(res){
+							if(res.code == 0){
+								$.each(res.list, function(index, res){
+									if(res.url != null){
+										arrdatas.push(JSON.stringify(res));
+									}
+								})
+							}
+						})
 					},
 					error: function(err, xmlerr, htmlerr){
 						console.log(xmlerr);
 					}
-				});
-				$.when(defer.promise()).done(function(res){
-					if(res.code == 0){
-						$.each(res.list, function(index, res){
-							if(res.url != null){
-								arrdatas.push(JSON.stringify(res));
-							}
-						})
-					}
-				})
+				});				
 			}
 
-			getDatas("http://47.114.147.221/?mhlb=hot", datas);
+			function getNameDatas(url, arrdatas, index){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: mhname+url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);							
+							$.when(defer.promise()).done(function(res){	
+								if(res.list != ""){
+									res.list[0].page = index;
+									console.log(res);
+									arrdatas.push(JSON.stringify(res.list[0]));
+								}
+							})
+						}
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});				
+			}
 
-			if(datas != null){
-				//返回给ui	
-				$("#comicHot").attr("ng-init", "datas=["+datas+"]");
-				//关闭加载
-				$(".comic-loading").hide();
+			getDatas(mhlb+"hot", datas);
+
+			if(datas.length > 1){				
+			// 	var newdata = new Array();
+			// 	var arr = numRandom(datas.length, 6);				
+			// 	for(var i = 0; i < arr.length; i++){
+			// 		newdata.push(datas[arr[i]]);
+			// 	}
+			// 	//返回给ui	
+			// 	$("#comicHot").attr("ng-init", "datas=["+newdata+"]");
+			// }else{
+				var newdata = new Array();
+				var arr = numRandom(namelist.length, 6);
+				for(var i = 0; i < arr.length; i++){
+					getNameDatas(namelist[arr[i]].name, newdata, (i+1));					
+				}
+				console.log(newdata);
+				$("#comicHot").attr("ng-init", "datas=["+newdata+"]");
 			}
 			
 		})

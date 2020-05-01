@@ -21,10 +21,23 @@
 				<div class="head_top">
 					<a class="goback" href="javascript: history.back();"></a>
 					<span class="title-name"></span>
-					<a href="javascript: void(0);"></a>
+					<a class="search-link" href="javascript: void(0);"></a>
 				</div>
 			</div>
 		</header>
+		<!-- 搜索 -->
+		<section id="searchMG" style="display: none;">
+			<div class="search-box">
+				<form action="javascript:return true">
+				    <input class="search-box-text search-font" type="search" :placeholder="请输入" autofocus @keyup.13="enterClick"/>
+				</form>
+			</div>
+			<div class="search-content">	
+				<ul class="search-init-ul">
+					
+				</ul>
+			</div>
+		</section>
 		<!-- 漫画详细信息 -->
 		<section id="titleInfo" class="ContentBase clearfix" ng-init="">
 			<div class="comic-info-div">
@@ -179,6 +192,29 @@
 				});				
 			}
 
+			function getNameDatas(url, arrdatas){
+				var defer = $.Deferred();				
+				$.ajax({
+					url: mhname+url,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){
+						if(res.code == 0){
+							defer.resolve(res);
+							$.when(defer.promise()).done(function(res){	
+								if(res.list != ""){																				
+									arrdatas.push(JSON.stringify(res.list[0]));
+								}
+							})
+						}
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(xmlerr);
+					}
+				});				
+			}
+
 			//猜你喜欢
 			console.log("mhlb= "+mhlb);
 			getDatas2(mhlb+"shaonianrexue", nixihuan , "nixihuan");
@@ -204,7 +240,8 @@
 				var newdata = new Array();
 				var arr = numRandom(nixihuan.length, 6);				
 				for(var i = 0; i < arr.length; i++){
-					newdata.push(nixihuan[arr[i]]);
+					nixihuan[arr[i]] = JSON.parse(nixihuan[arr[i]]);
+					getNameDatas(nixihuan[arr[i]].name, newdata);
 				}
 				//返回给ui	
 				$("#nixihuan").attr("ng-init", "nixihuan=["+newdata+"]");				

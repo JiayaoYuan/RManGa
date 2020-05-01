@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="./css/common.css">
 	<link rel="stylesheet" href="./css/index.css">
 	<link rel="stylesheet" href="./css/category.css">
+	<script src="./js/datas.js"></script>
 </head>	
 <body>
 	<div class="slcf_container">
@@ -20,10 +21,23 @@
 				<div class="head_top">					
 					<a class="goback" href="javascript: history.back();"></a>
 					<span>分类</span>
-					<a href="javascript: void(0);"></a>
+					<a class="search-link" href="javascript: void(0);"></a>
 				</div>
 			</div>
 		</header>
+		<!-- 搜索 -->
+		<section id="searchMG" style="display: none;">
+			<div class="search-box">
+				<form action="javascript:return true">
+				    <input class="search-box-text search-font" type="search" :placeholder="请输入" autofocus @keyup.13="enterClick"/>
+				</form>
+			</div>
+			<div class="search-content">	
+				<ul class="search-init-ul">
+					
+				</ul>
+			</div>
+		</section>
 		<!-- 漫画国际分类 -->
 		<section class="ContentBase clearfix">
 			<ul class="category-init-ul">
@@ -149,6 +163,6 @@
 	<script src="./js/jquery-3.4.1.min.js"></script>
 	<script src="./js/mock.js"></script>
 	<script src="./js/common.js"></script>
-	<script src="./js/rem.js"></script>	
+	<script src="./js/rem.js"></script>
 </body>
 </html>

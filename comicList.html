@@ -21,10 +21,23 @@
 				<div class="head_top">					
 					<a class="goback" href="javascript: history.back();"></a>
 					<span>列表</span>
-					<a href="javascript: void(0);"></a>
+					<a class="search-link" href="javascript: void(0);"></a>
 				</div>
 			</div>
-		</header>		
+		</header>
+		<!-- 搜索 -->
+		<section id="searchMG" style="display: none;">
+			<div class="search-box">
+				<form action="javascript:return true">
+				    <input class="search-box-text search-font" type="search" :placeholder="请输入" autofocus @keyup.13="enterClick"/>
+				</form>
+			</div>
+			<div class="search-content">	
+				<ul class="search-init-ul">
+					
+				</ul>
+			</div>
+		</section>		
 		<!-- 漫画列表 -->
 		<section id="comicList" class="ContentBase clearfix" ng-app="" ng-init="">			
 			<ul class="rank-init-ul">
@@ -36,18 +49,22 @@
 						<div class="item-info">
 							<strong class="item-title">{{ x.name }}</strong>
 							<!-- <small class="item-num">23400</small> -->
-							<small class="item-class">{{ x.latest }}</small>
-							<small class="item-time">{{ x.time }}</small>
+							<small class="item-class" style="color: #d97685;">{{ x.author }}</small>
+							<small class="item-time">{{ x.status }}</small>
+							<small class="item-time">{{ x.tag }}</small>
 						</div>
 					</a>
 				</li>
 			</ul>
 		</section>
 		<section class="load-more">
-			<div class="status-loading" style="display: none;">
+			<div class="status-loading">
 				<p class="loading-info">加载中...</p>
 			</div>
-			<div class="status-over">~已经到底了~</div>
+			<div class="status-over" style="display: none;">~已经到底了~</div>
+			<div class="status-btn" style="display: none; width: 100%; height: 100%;">
+				<button type="button" style="display: block; width: 100%; height: 100%; background: none; border: none;">点击下一章</button>
+			</div>
 		</section>
 		<!-- 漫画loading -->
 		<div class="comic-loading comic-list-loading">
@@ -63,7 +80,28 @@
 			//获取漫画类型参数
 			var pathName = getQueryVariable("class");
 			var datas = new Array();
+			var shuye = 1; //初始化页面
+			var shuyeAll = 0; //总页面
 			console.log("类型参数： " + pathName);
+			
+			function getData(name, arrdatas){
+				var defer = $.Deferred();
+				$.ajax({
+					url: mhname+name,
+					type: "get",
+					async: false,
+					dataType: "json",
+					success: function(res){
+						defer.resolve(res);
+						$.when(defer.promise()).done(function(res){
+							arrdatas.push(JSON.stringify(res.list[0]));
+						})
+					},
+					error: function(err, xmlerr, htmlerr){
+						console.log(htmlerr);
+					}
+				});			
+			}			
 
 			function getDatas(url, arrdatas){
 				var defer = $.Deferred();				
@@ -80,11 +118,18 @@
 							$.when(defer.promise()).done(function(res){
 								if(res.list != ""){
 									if(Number(res.list[0].number) > 1){
+										shuye = Number(res.list[0].pages);
+										shuyeAll = Number(res.list[0].dpages);
 										$.each(res.list, function(index, res){
 											if(res.url != null){
-												arrdatas.push(JSON.stringify(res));
+												arrPageName.push(res.name); //添加姓名进组
 											}
-										})
+										});
+										for(var i = 0; i < 10; i++){
+											getData(arrPageName[i], datas);
+											loadData.push(JSON.parse(datas[i]));
+										}
+										manhuaNum = 10;
 									}else{
 										//关闭加载		
 										$(".loading-gif").hide();
@@ -105,15 +150,144 @@
 				});				
 			}
 
-			pathName = mhlb+pathName; 
+			var pathName2 = mhlb+pathName+"-1";
 
-			getDatas( pathName, datas);
+			getDatas( pathName2, datas);
 
-			if(datas != null){
+			//无限下拉列表2		    
+		    // function showAjax(page){
+		    //     $.ajax({
+		    //           url:mhlb + pathName + "-" + page,
+		    //           type:"get",
+		    //           async: false,
+		    //           dataType: "json",              
+		    //           success:function(data){
+		    //             var defer = $.Deferred();
+		    //             //要执行的内容
+		    //             if(data.code == 0){
+		    //               defer.resolve(data);                  
+		    //               $.when(defer.promise()).done(function(res){
+		    //                 if(res.list != ""){
+		    //                   if(Number(res.list[0].number) > 1){
+		    //                     $.each(res.list, function(index, res){
+		    //                       if(res.url != null){
+		    //                         arrPageName.push(res.name); //添加姓名进组
+		    //                       }
+		    //                     })
+		    //                   }else{
+		    //                     //关闭加载    
+		    //                     $(".loading-gif").hide();
+		    //                     $(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+		    //                   }
+		    //                 }else{
+		    //                   //关闭加载    
+		    //                   $(".loading-gif").hide();
+		    //                   $(".comic-loading").append("<p style='position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: .32rem; color: #c7c7c7;'>"+ res.message +"</p>");
+		    //                 }                           
+		    //               })
+		    //             }
+		    //             showContent(arrPageName);
+		    //           }
+		    //     })
+		    // }
+
+		    function scrollFn(){
+		        //真实内容的高度
+		        var pageHeight = Math.max(document.body.scrollHeight,document.body.offsetHeight);
+		        //视窗的高度
+		        var viewportHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight || 0;
+		        //隐藏的高度
+		        var scrollHeight = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+		        if(pageHeight - viewportHeight - scrollHeight < 50){//如果满足触发条件，执行		        	
+		            if(isComplete){
+		            	$(".status-loading").hide();
+		            	$(".status-btn").show();
+		            }else{
+		            	$(".status-loading").show();
+		            	showContent(arrPageName);
+		            }
+		        }
+		    }
+
+		    $(".status-btn").on("click", function(){
+				arrPageName.splice(0, arrPageName.length);
+				manhuaNum = 0;
+				isComplete = false;
+				if(shuye <= shuyeAll){
+					window.location.href = location.pathname + "?class=" + pathName.split("-")[0] + "-" + (++shuye);
+				}else{
+					$(".status-btn").hide();
+					$(".status-over").show();
+				}
+        	})	
+
+		    function showContent(arrPageName){
+		 		var newmanhuaNum = manhuaNum+10;
+		 		datas.splice(0, datas.length);  //清除加载数据数组，重新加载数据组
+				for(manhuaNum; manhuaNum < newmanhuaNum; manhuaNum++){					
+					if(manhuaNum >= arrPageName.length){
+						isComplete = true;
+						manhuaNum = newmanhuaNum;
+
+						return ;
+					}else{
+						if(arrPageName[manhuaNum] != undefined){
+							getData(arrPageName[manhuaNum], datas);
+						}
+					}
+				}
+				
+				if(datas != null){					
+					for(var i = 0; i < datas.length; i++){
+						datas[i] = JSON.parse(datas[i]);
+						for(var j = 0; j < loadData.length; j++){
+							if(datas[i].name != loadData[j].name){
+								var html = jDom(datas[i].url, datas[i].cover, datas[i].name, datas[i].author, datas[i].stauts, datas[i].tag);
+								$("#comicList ul").append(html);
+								loadData.push(datas[i]);
+								break;
+							}
+						}						
+					}
+				}
+		    }
+
+		    $(window).bind("scroll", scrollFn);//绑定滚动事件
+		//无限下拉列表2
+		
+			//angular DOM结构渲染
+		 	if(datas != null){
 				//返回给ui	
-				$("#comicList").attr("ng-init", "datas=["+datas+"]");				
+				$("#comicList").attr("ng-init", "datas=["+datas+"]");
 			}
-			
+
+			//jquery DOM结构渲染
+			function jDom(url, cover, name, author, status, tag){
+				var html = "<li class='rank-init-li' ng-repeat='x in datas'>"+
+					"<a href='./comic.html?url="+url+"' class='item-link'>"+
+						"<div class='item-cover-div'>"+
+							"<img src='"+cover+"' alt='' class='item-cover'>"+
+						"</div>"+
+						"<div class='item-info'>";
+				var nameHtml = "<strong class='item-title'>"+name+"</strong>";
+				var authorHtml = "<small class='item-class' style='color: #d97685;'>"+author+"</small>";
+				var statusHtml = "<small class='item-time'>"+status+"</small>";
+				var tagHtml = "<small class='item-time'>"+tag+"</small>";
+				if(name != undefined){
+					html+=nameHtml;
+				}
+				if(author != undefined){
+					html+=authorHtml;
+				}
+				if(status != undefined){
+					html+=statusHtml;
+				}
+				if(tag != undefined){
+					html+=tagHtml;
+				}
+				html += "</div></a></li>";
+				return html;
+			}
 		})
 	</script>
 	<script src="./js/angular.1.57.js"></script>

@@ -1,0 +1,94 @@
+.comic-info-div{
+	display: flex;
+	position: relative;
+	width: 100%;
+	height: 3.3rem;
+	background: #fff;
+	border-radius: 10px;
+	padding: .1rem;
+}
+
+.comic-cover{
+	width: 40%;
+	overflow: hidden;
+	position: relative;
+}
+
+.comic-cover .item-cover{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	height: auto;
+	max-height: 3rem;
+	width: 100%;
+	overflow: hidden;
+}
+
+.comic-info{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	margin-left: .2rem;
+	font-size: .28rem;
+}
+
+.comic-info strong, .comic-info small{
+	height: .4rem;
+	line-height: .4rem;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;	
+	text-overflow: ellipsis;
+}
+
+.info-num{
+	padding-left: .5rem;
+	background: url(../img/love.png) no-repeat;
+	background-position: left;
+	background-size: .4rem .4rem;
+}
+
+.info-descript{
+	height: .8rem !important;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;	
+	text-overflow: ellipsis;
+}
+
+.read-btn{
+	position: absolute;
+	width: 1.4rem;
+	height: .6rem;
+	font-size: .24rem;
+	border-radius: .6rem;
+	right: .2rem;
+	bottom: 0;
+	background: rgba(238, 151, 204, .7);
+	border: .05rem solid #ddd;
+}
+
+.chapter-init-ul{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	min-height: 1.6rem;
+	padding: .1rem;
+}
+
+.chapter-init-li{			
+	margin-bottom: .1rem;
+	margin-right: .1rem;
+}
+
+.chapter-link{
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+	padding: .1rem;
+	text-align: center;
+	font-size: .28rem;
+	border: 1px solid #ddd;
+	border-radius: .75rem;
+}

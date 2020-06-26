@@ -1,0 +1,240 @@
+.head_logo{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: .20rem;
+	width: 1.84rem;
+	height: .54rem;
+	overflow: hidden;
+}
+.ContentBase {
+    box-sizing: border-box;
+    position: relative;
+    width: 7.2rem;    
+    cursor: default;
+    margin: 0 auto;
+    margin-top: .1rem;
+    border-radius: 10px;
+}
+/*banner style start*/
+.slcf_banner {
+    position: relative;    
+    float: left;
+    /*top: -.6rem;*/
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+.slider_wrapper {	
+    position: relative;
+	overflow: hidden;	
+	width: 100%;
+    background-size: 100% 100%;
+}
+.slider_wrapper ul:first-child{
+    width: 1000%;
+    transform: translateX(-10%);
+    -webkit-transform: translateX(-10%);
+}
+.slider_wrapper ul:first-child li{
+    box-sizing: border-box;
+    width: 10%;    
+    /*height: 2.48rem;*/
+    float: left;    
+}
+.slider_wrapper ul:first-child li a{
+    box-sizing: border-box;
+    width: 100%;
+    height: 3.52rem;  
+    overflow: hidden;
+    border-radius: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    background: #fff;
+    margin: 0 auto;
+}
+.slider_wrapper ul:first-child li a img{
+    position: relative;
+    box-sizing: border-box;
+    width: 33.33333333%;
+    height: auto;
+    /*box-shadow:  0 .1rem .1rem rgba(0, 0, 0, .8);    */
+    /*margin: 0 auto; */   
+    display: block;
+}
+.slider_wrapper .slide_nav {
+	position: absolute;
+	overflow: hidden;
+    text-align: center;
+    left: 0;
+    bottom: .3rem;
+    z-index: 11;
+    width: 100%;
+}
+.slider_wrapper .slide_nav > li {
+	box-sizing: border-box;
+    background-color: transparent;    
+    width: .1rem;
+    height: .1rem;
+    border-radius: 50%;
+    background: #fff;
+    border: 1px solid #fff;
+    margin: 0 .05rem;
+    display: inline-block;
+    opacity: .7;
+}
+.slider_wrapper .slide_nav .active {
+    width: .2rem;
+    height: .1rem;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+
+
+
+/*main-content stye start*/
+.main-content{
+    position: relative;
+    /*top: -.6rem;*/
+    /*margin-top: .1rem;*/
+	border-top: .2rem solid rgba(221, 221, 221, .7);
+    float: left;
+    width: 100%;
+    background: #fff;
+}
+.main-content > h1{
+    margin: .1rem 0 .1rem .1rem;
+    font-size: 16px;
+    font-weight: bolder;    
+}
+.main-content > h1 span{
+    font-size: .14px;
+    font-weight: 300;
+    color: #b6b6b6;
+    margin-left: .2rem;
+}
+.shop_package{
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+    width: 100%;
+    background: #fff;
+    border-radius: 10px;
+    margin-bottom: .3rem;
+}
+.shop_package .shop_title{
+    box-sizing: border-box;
+    position: relative;
+    width: 100%;
+    height: .5rem;
+    line-height: .5rem;
+    border-bottom: 1px solid #eeeeee;
+}
+.shop_package .shop_title > i{
+    position: absolute;
+    height: .25rem;
+    width: .25rem;
+    top: .125rem;
+    left: .2rem;
+    background: url("../../img/shop_content/_package.png") no-repeat;
+    background-size: .25rem .25rem;
+}
+.shop_package .shop_title > span{
+    font-size: 12px;
+    font-weight: bold;
+    text-align: left;
+    margin-left: .6rem;
+}
+.shop_package .shop_title > a{
+    position: absolute;
+    right: 0;
+    margin-right: .2rem;
+}
+.shop_package .shop_title > a > span{
+    font-size: .14rem;
+    font-weight: 500;
+    color: #bfbfbf;    
+    margin-right: .3rem;
+}
+.shop_package .shop_title > a > i{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);    
+    width:  14px;
+    height: 14px;
+    right: 0;
+    background: url(../../img/shop_content/moreTheno2.png) no-repeat;
+    background-size: 14px 14px;
+}
+.ship_pic_wrap{
+    position: relative;
+    box-sizing: border-box;
+    float: left;
+    width: 33.3333%;
+}
+.ship_pic_wrap a{
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+}
+.ship_pic_wrap a img{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    height: auto;
+    min-height: 2rem;
+    max-height: 3rem;
+    overflow: hidden;
+    border-radius: 10px;
+}
+.ship_pic_wrap a span{
+    position: relative;
+    display: block;
+    margin-top: .1rem;
+    font-weight: bold;
+    text-align: center;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.ship_pic_wrap a p{
+	text-align: center;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* loading */
+.comic-loading{
+    display: block;
+    width: 70px;
+    text-align: center;
+    font-size: 0;
+}
+
+.comic-list-loading{
+    position: fixed;
+    z-index: 500;
+    top: 0;
+	left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 7.5rem;
+    margin: 0 auto;
+    background-color: white;
+}
+
+.loading-gif{
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%;
+    height: auto;
+    overflow: hidden;
+}

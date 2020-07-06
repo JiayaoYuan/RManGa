@@ -1,0 +1,17 @@
+<!--components/banner/banner.wxml-->
+<!-- 轮播图 -->
+<view class="ContentBase clearfix">
+  <view class="slcf_banner">
+    <view class="slider_wrapper" wx:if="{{bannerList.length > 0}}">
+      <swiper class="tab_swiper" indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+        <swiper-item wx:for="{{bannerList}}" wx:key="index">
+          <navigator class="tab_a" url="../../pages/comic/comic?mhurl1={{item.url}}" open-type="navigate">
+            <image class="tab_img" src="{{item.cover}}"></image>
+            <image class="tab_img" src="{{item.cover}}"></image>
+            <image class="tab_img" src="{{item.cover}}"></image>
+          </navigator>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>		
+</view>

@@ -1,0 +1,27 @@
+<!--pages/rank/rank.wxml-->
+<!-- 漫画排行 -->
+<header showA="{{true}}" showLogo="{{false}}"></header>
+<view id="comicHot" class="ContentBase clearfix">			
+  <ul class="rank-init-ul">
+    <li class="rank-init-li" wx:for="{{rankdatas}}" wx:key="index">
+      <navigator url="../../pages/comic/comic?mhurl1={{item.url}}" open-type="navigate" class="rank-item-link">
+        <view class="item-cover-div">
+          <image src="{{item.cover}}" class="item-cover"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-title">{{ item.name }}</text>
+          <!-- <small class="item-num">23400</small> -->
+          <text class="item-class">{{ item.latest }}</text>
+          <text class="item-time">{{ item.time }}</text>          
+        </view>
+        <view class="item-number number{{index+1}}">{{index+1}}</view>
+      </navigator>
+    </li>
+  </ul>
+</view>
+<view wx:if="{{show}}" class="load-more">
+  <view class="status-loading" style="display: none;">
+    <view class="loading-info">加载中...</view>
+  </view>
+  <view class="status-over">~已经到底了~</view>
+</view>

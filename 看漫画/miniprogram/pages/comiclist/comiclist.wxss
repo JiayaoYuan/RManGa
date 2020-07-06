@@ -1,0 +1,66 @@
+/* pages/comiclist/comiclist.wxss */
+page{
+  background-color: rgba(238, 151, 204, .3);
+}
+.ContentBase {
+  box-sizing: border-box;
+  position: relative;
+  width: 720rpx;    
+  cursor: default;
+  margin: 0 auto;
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+}
+.rank-init-li{
+	position: relative;
+}
+.rank-item-link{
+  position: relative;
+	display: flex;
+	padding: 10rpx;
+	height: 210rpx;
+	margin-bottom: 10rpx;
+	border-radius: 10rpx;
+	background: #fff;
+}
+
+.item-cover-div{
+	width: 25%;
+	height: 100%;
+}
+
+.item-cover-div .item-cover{
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+}
+
+.item-info{
+	display: flex;
+	width: 80%;
+	padding-left: 20rpx;
+	flex-direction: column;
+	font-size: 32rpx;
+}
+
+.item-info strong, .item-info .item-title, .item-info .item-class, .item-info .item-time{
+  font-size: 28rpx;
+	margin-bottom: 20rpx;
+}
+
+.item-num{
+	padding-left: 50rpx;
+	background: url(../img/love.png) no-repeat;
+	background-position: left;
+	background-size: 50rpx 50rpx;
+}
+
+.load-more{
+	text-align: center;	
+	border-radius: 50% 50% 0 0;
+	background: #fff;
+}
+
+.status-btn{
+
+}

@@ -1,0 +1,16 @@
+<!--components/youlike.wxml-->
+<!-- 猜你喜欢 -->
+<view class="ContentBase clearfix">
+  <view class="main-content" wx:if="{{arrdatas.length > 0}}">
+    <h1 class="tab_h1">{{reTitle}}</h1>
+    <view id="nixihuan" class="shop_package clearfix">
+      <view class="ship_pic_wrap" wx:for="{{arrdatas}}" wx:key="index">
+        <navigator class="tab_a" url="../../pages/comic/comic?mhurl1={{item.url}}" open-type="navigate">
+          <image class="tab_img" src="{{item.cover}}"></image>
+          <text class="tab_span">{{item.name}}</text>
+          <view class="tab_p">{{item.latest}}</view>
+        </navigator>
+      </view>
+    </view>				
+  </view>
+</view>

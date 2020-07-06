@@ -1,0 +1,10 @@
+{
+  "usingComponents": {
+    "header": "../../components/header/header"
+  },
+  "backgroundColor": "#F6F6F6",
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#e7a8cf",
+  "navigationBarTitleText": "列表",
+  "navigationBarTextStyle": "black"
+}

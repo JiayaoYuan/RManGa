@@ -1,0 +1,39 @@
+{
+  "pages": [
+   "pages/index/index",
+   "pages/category/category",
+   "pages/rank/rank",
+   "pages/comiclist/comiclist",
+   "pages/comic/comic",
+   "pages/chapter/chapter"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "云开发 QuickStart",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "backgroundColor": "#e7a8cf",
+    "selectedColor": "#fff",
+    "list": [{
+      "pagePath": "pages/category/category",
+      "text": "分类",
+      "iconPath": "/images/fire2.png",
+      "selectedIconPath": "/images/fire2.png"
+    },{
+      "pagePath": "pages/index/index",
+      "text": "首页",
+      "iconPath": "/images/fire1.png",
+      "selectedIconPath": "/images/fire1.png"
+    },{
+      "pagePath": "pages/rank/rank",
+      "text": "排行",
+      "iconPath": "/images/fire3.png",
+      "selectedIconPath": "/images/fire3.png"
+    }]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

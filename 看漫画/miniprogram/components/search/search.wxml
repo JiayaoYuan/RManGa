@@ -1,0 +1,24 @@
+<!--components/search/search.wxml-->
+<!-- 搜索 -->
+<view class="searchMG" wx:if="{{searchShow}}">
+  <view class="search-box">
+    <form action="javascript:return true">
+        <input class="search-box-text search-font" bindblur="getMhnameDatas" type="text" confirm-type="search" placeholder="请输入"/>
+    </form>
+  </view>
+  <view class="search-content" bindtap="searchhide">
+    <ul class="search-init-ul">
+      <li class="search-init-li" wx:for="{{searchdata}}" wx:key="index">
+        <navigator url="../../pages/comic/comic?mhurl1={{item.url}}" open-type="navigate" class="item-link">
+          <view class="item-cover-div">
+            <image mode="widthFix" src="{{item.cover}}" class="item-cover"></image>
+          </view>
+          <view class="item-info">
+            <view class="item-title">{{item.name}}</view>
+            <view class="item-class">{{item.latest}}</view>
+          </view>
+        </navigator>
+      </li>
+    </ul>
+  </view>
+</view>

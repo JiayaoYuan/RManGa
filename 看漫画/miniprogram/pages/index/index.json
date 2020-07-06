@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "header": "../../components/header/header",
+    "bannerTag": "../../components/banner/banner",
+    "youlike": "../../components/youlike/youlike"
+  },
+  "backgroundColor": "#F6F6F6",
+  "backgroundTextStyle": "light",
+  "navigationBarBackgroundColor": "#e7a8cf",
+  "navigationBarTitleText": "首页",
+  "navigationBarTextStyle": "black"
+}

@@ -1,0 +1,30 @@
+<!--pages/comiclist/comiclist.wxml-->
+<!-- 漫画列表 -->
+<header showA="{{true}}" showLogo="{{false}}"></header>
+<view id="comicList" class="ContentBase clearfix">			
+  <ul class="rank-init-ul">
+    <li class="rank-init-li" wx:for="{{comiclist}}" wx:key="index">
+      <navigator url="../comic/comic?mhurl1={{item.url}}" open-type="navigate" class="rank-item-link">
+        <view class="item-cover-div">
+          <image src="{{item.cover}}" class="item-cover"></image>
+        </view>
+        <view class="item-info">
+          <text class="item-title">{{ item.name }}</text>
+          <!-- <text class="item-num">23400</text> -->
+          <text class="item-class" style="color: #d97685;">{{ item.author }}</text>
+          <text class="item-time">{{ item.status }}</text>
+          <text class="item-time">{{ item.tag }}</text>
+        </view>
+      </navigator>
+    </li>
+  </ul>
+</view>
+<view wx:if="{{show}}" class="load-more">
+  <!-- <view class="status-loading" style="display: none;">
+    <view class="loading-info">加载中...</view>
+  </view>
+  <view class="status-over">~已经到底了~</view> -->
+  <view class="status-btn" style="width: 100%; height: 100%;">
+    <button bindtap="getAddPage" type="button" style="font-size: 26rpx; padding: 0; display: block; width: 100%; height: 120rpx; line-height: 120rpx; background: none; border: none;">点击下一章</button>
+  </view>
+</view>

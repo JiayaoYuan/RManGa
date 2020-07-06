@@ -1,0 +1,109 @@
+/* pages/comic/comic.wxss */
+page{
+  background-color: rgba(238, 151, 204, .3);
+}
+.ContentBase {
+  box-sizing: border-box;
+  position: relative;
+  width: 720rpx;    
+  cursor: default;
+  margin: 0 auto;
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+}
+.comic-info-div{
+	display: flex;
+	position: relative;
+	height: 330rpx;
+	background: #fff;
+	border-radius: 10rpx;
+	padding: 10rpx;
+}
+
+.comic-cover{
+	width: 40%;
+	overflow: hidden;
+	position: relative;
+}
+
+.comic-cover .item-cover{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	max-height: 300rpx;
+	width: 100%;
+	overflow: hidden;
+}
+
+.comic-info{
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 80%;
+	margin-left: 20rpx;
+	font-size: 28rpx;
+}
+
+.comic-info .info-title, .comic-info .info-num, .comic-info .info-timej{
+	height: 40rpx;
+	line-height: 40rpx;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;	
+	text-overflow: ellipsis;
+}
+
+.info-num{
+	padding-left: 50rpx;
+  background-position: left;
+  background-repeat: no-repeat;
+	background-size: 40rpx 40rpx;
+}
+
+.info-descript{
+	height: 140rpx !important;
+	word-wrap: break-word;
+	word-break: break-all;
+	overflow: hidden;	
+	text-overflow: ellipsis;
+}
+
+.read-btn{
+  position: absolute;
+  min-height: 0!important;
+	width: 140rpx !important;
+  height: 60rpx  !important;
+  line-height: 60rpx  !important;
+  padding: 0 !important;
+	font-size: 24rpx;
+	border-radius: 60rpx;
+	right: 20rpx;
+	bottom: 0;
+	background: rgba(238, 151, 204, .7);
+	border: 5rpx solid #ddd;
+}
+
+.chapter-init-ul{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: flex-start;
+	min-height: 160rpx;
+	padding: 10rpx;
+}
+
+.chapter-init-li{			
+	margin-bottom: 10rpx;
+	margin-right: 10rpx;
+}
+
+.chapter-link{
+	box-sizing: border-box;
+	display: block;
+	width: 100%;
+	padding: 10rpx;
+	text-align: center;
+	font-size: 28rpx;
+	border: 1rpx solid #ddd;
+	border-radius: 75rpx;
+	background-color: #fff;
+}

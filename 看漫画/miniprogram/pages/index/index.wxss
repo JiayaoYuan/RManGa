@@ -1,0 +1,13 @@
+/* pages/index/index.wxss */
+.ContentBase {
+  box-sizing: border-box;
+  position: relative;
+  width: 720rpx;    
+  cursor: default;
+  margin: 0 auto;
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+}
+page{
+  background-color: rgba(238, 151, 204, .3);
+}

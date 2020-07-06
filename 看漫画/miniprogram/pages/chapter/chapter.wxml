@@ -1,0 +1,38 @@
+<!--pages/chapter/chapter.wxml-->
+<view class="slcf_container">
+  <!-- 悬浮栏区域 上 -->
+  <view class="float-bar top {{topClass}}">
+    <!-- <view bindtap="goback" url="#" class="goback"></view> -->
+    <image bindtap="gobackcomic" src="../../images/fire_comic.png" open-type="navigate" class="godescript">详</image>
+    <image bindtap="gobackhome" src="../../images/fire_home.png" open-type="switchTab" class="gohome">家</image>
+    <view class="float-bar-info"><text>0</text>/<text>{{imgnum}}</text></view>
+  </view>
+  <!-- 漫画图片区域 -->
+  <view class="comic-pic-list-all clearfix" id="open-ctrl">
+    <!-- <view wx:if="{{!(page-1 < 0)}}" url="../chapter/chapter?mhurl2={{prevchapter.url}}&page={{page-1}}&mhurl1={{mhurl1}}}&allpage={{allpage}}" class="nav-ctrl-btn prev" data-can-read="">点击加载上一章</view>			 -->
+    <view wx:if="{{!(page-1 < 0)}}" bindtap="prevpagedata" class="nav-ctrl-btn prev" data-can-read="">点击加载上一章</view>			
+    <!-- 漫画图片插入 -->		
+    <view class="comic-pic-insert" bindtap="toggleShow">
+      <ul class="comic-pic-ul">
+        <li class="comic-pic-li" wx:for="{{chapterdata}}" wx:key="index">
+          <view class="comic-pic-box">
+            <image mode="widthFix" src="{{item.img}}" alt="" class="comic-pic"></image>
+          </view>
+        </li>
+      </ul>
+    </view>
+    <!-- <view wx:if="{{!(page+1 > allpage - 1)}}" url="../chapter/chapter?mhurl2={{nextchapter.url}}&page={{page+1}}&mhurl1={{mhurl1}}}&allpage={{allpage}}" class="nav-ctrl-btn next" data-can-read="">点击加载下一章</view>			 -->
+    <view wx:if="{{!(page+1 > allpage - 1)}}" bindtap="nextpagedata" class="nav-ctrl-btn next" data-can-read="">点击加载下一章</view>			
+  </view>
+  <!-- 悬浮栏 下 -->
+  <view class="float-bar bottom {{bottomClass}}">
+    <!-- <view wx:if="{{!(page-1 < 0)}}" url="../chapter/chapter?mhurl2={{prevchapter.url}}&page={{page-1}}&mhurl1={{mhurl1}}}&allpage={{allpage}}" class="chapter-prev-btn" type="button">上一章</view>
+    <view wx:if="{{!(page+1 > allpage - 1)}}" url="../chapter/chapter?mhurl2={{nextchapter.url}}&page={{page+1}}&mhurl1={{mhurl1}}}&allpage={{allpage}}" class="chapter-next-btn" type="button">下一章</view> -->
+    <view wx:if="{{!(page-1 < 0)}}" bindtap="prevpagedata" class="chapter-prev-btn" type="button">上一章</view>
+    <view wx:if="{{!(page+1 > allpage - 1)}}" bindtap="nextpagedata"class="chapter-next-btn" type="button">下一章</view>
+  </view>
+  <!-- 漫画控制面板 -->
+  <view class="comic-ctrl-box {{comicBox}}" bindtap="toggleShow">
+    <view class="comic-back-box"></view>
+  </view>
+</view>

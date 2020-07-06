@@ -1,0 +1,41 @@
+<!--pages/category/category.wxml-->
+<!-- 漫画国际分类 -->
+<header showA="{{true}}" showLogo="{{false}}"></header>
+<view class="ContentBase clearfix">
+  <ul class="category-init-ul">
+    <li class="country-init-li">
+      <navigator url="" class="country-init-link">
+        <text class="country-name">国漫</text>
+      </navigator>
+    </li>
+    <li style="height: 96rpx; width: 1rpx; background: #515151;"></li>
+    <li class="country-init-li">
+      <navigator url="" class="country-init-link">
+        <text class="country-name">日韩</text>
+      </navigator>
+    </li>
+    <li style="width: 100%; height: 1rpx; background: #515151;"></li>
+    <li class="country-init-li">
+      <navigator url="" class="country-init-link">
+        <text class="country-name">港台</text>
+      </navigator>
+    </li>
+    <li style="height: 96rpx; width: 1rpx; background: #515151;"></li>
+    <li class="country-init-li">
+      <navigator url="" class="country-init-link">
+        <text class="country-name">欧美</text>
+      </navigator>
+    </li>
+  </ul>
+</view>
+<!-- 漫画普通分类 -->
+<view class="ContentBase clearfix">			
+  <ul class="category-init-ul">
+    <li class="category-init-li" wx:for="{{category}}" wx:key="index">
+      <navigator url="../comiclist/comiclist?mhname={{item.name}}&title={{item.text}}" open-type="navigate" class="category-item-link">
+        <image class="category-item-cover" src="{{item.cover}}" alt=""></image>
+        <text class="item-name">{{item.text}}</text>
+      </navigator>					
+    </li>
+  </ul>		
+</view>

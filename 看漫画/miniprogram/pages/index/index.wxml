@@ -1,0 +1,8 @@
+<!--pages/index/index.wxml-->
+<header></header>
+<bannerTag bannerList="{{bannerList}}"></bannerTag>
+<view class="ContentBase">
+  <youlike arrdatas="{{gcdatas}}" reTitle="国产漫画"></youlike>
+  <youlike arrdatas="{{gtdatas}}" reTitle="港台漫画"></youlike>
+  <youlike arrdatas="{{rhdatas}}" reTitle="日韩漫画"></youlike>
+</view>

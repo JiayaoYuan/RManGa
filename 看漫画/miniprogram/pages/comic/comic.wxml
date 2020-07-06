@@ -1,0 +1,30 @@
+<!--pages/comic/comic.wxml-->
+<!-- 漫画详细信息 -->
+<header showA="{{true}}" showLogo="{{false}}"></header>
+<view id="titleInfo" class="ContentBase clearfix">
+  <view class="comic-info-div">
+    <view class="comic-cover">
+      <image mode="widthFix" src="{{comicdata.cover}}" class="item-cover"></image>
+    </view>
+    <view class="comic-info">
+      <view class="info-title">{{ comicdata.name }}</view>
+      <view class="info-num" style="background-image: url(../../images/love.png);">{{ comicdata.tag }}</view>
+      <!-- <view class="info-class">{{ comicdata.latest }}</view> -->
+      <view class="info-time">{{ comicdata.time }}</view>
+      <view class="info-descript">{{ comicdata.introduce }}</view>
+      <button bindtap="readClick" class="read-btn" type="button">点击阅读</button>
+    </view>
+  </view>
+</view>
+<!-- 章节列表 -->
+<view id="chapter" class="ContentBase clearfix">
+  <view class="main-content">
+    <h1>章节列表</h1>
+    <ul class="chapter-init-ul">
+      <li class="chapter-init-li" wx:for="{{chapterdata}}" wx:key="index">
+        <navigator url="../chapter/chapter?mhurl2={{item.url}}&page={{index}}&mhurl1={{mhurl1}}&allpage={{allpage}}" open-type="redirect" class="chapter-link">{{ item.num }}</navigator>
+      </li>
+    </ul>
+  </view>
+</view>
+<youlike arrdatas="{{arrdatas}}" ></youlike>

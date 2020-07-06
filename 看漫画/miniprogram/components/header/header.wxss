@@ -1,0 +1,59 @@
+/* components/header/header.wxss */
+.head_container{
+  position: relative;
+  z-index: 999;
+  width: 750rpx;
+  height: 96rpx;
+}
+.head_top{  
+  position: fixed;
+  width: 750rpx;
+  height: 96rpx;
+  line-height: 96rpx;
+  background: #fff;  
+  font-size: 32rpx;
+  font-weight: bolder;
+  color: #515151;
+  overflow: hidden;
+  border-radius: 0 0 30% 30%;
+}
+.head_top > .tab_span{
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  word-wrap: break-word;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.head_logo{
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: 20rpx;
+	width: 184rpx;
+	height: 54rpx;
+	overflow: hidden;
+}
+.head_top > .search-link{
+  position: absolute; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50rpx;
+  height: 50rpx;
+  right: 35rpx;  
+  background-repeat: no-repeat;
+  background-size: 50rpx 50rpx;
+}
+.head_top > .goback{
+  position: absolute; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 50rpx;
+  height: 50rpx; 
+  background-repeat: no-repeat;
+  background-size: 50rpx 50rpx;
+  left: 35rpx;
+  background-repeat: no-repeat;
+  background-size: 50rpx 50rpx;
+}

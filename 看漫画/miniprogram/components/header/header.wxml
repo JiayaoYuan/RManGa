@@ -1,0 +1,9 @@
+<!--components/header/header.wxml-->
+<view class="head_container">
+  <view class="head_top">
+    <!-- <navigator bindtap="goback" wx:if="{{showA}}" class="goback" url="#" style="background-image: url(../../images/goback.png);"></navigator> -->
+    <image class="head_logo" src="../../images/logo-1.png" alt=""></image>
+    <image bindtap="addSearch" class="search-link" src="../../images/search.png" ></image>
+  </view>  
+</view>
+<search searchShow="{{searchShow}}"></search>
